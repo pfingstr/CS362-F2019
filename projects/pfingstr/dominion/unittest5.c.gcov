@@ -1,0 +1,178 @@
+        -:    0:Source:unittest5.c
+        -:    0:Graph:unittest5.gcno
+        -:    0:Data:unittest5.gcda
+        -:    0:Runs:1
+        -:    0:Programs:1
+        -:    1:#include "dominion.h"
+        -:    2:#include "dominion_helpers.h"
+        -:    3:#include <string.h>
+        -:    4:#include <stdio.h>
+        -:    5:#include <assert.h>
+        -:    6:#include "rngs.h"
+        -:    7:#define CARD_TEST "Tribute"
+        -:    8:
+        -:    9://gcc -o unittest5 dominion.c rngs.c unittest5.c .... /Desktop/cs362/CS362-F2019/projects/pfingstr/dominion
+        -:   10:
+        8:   11:void fakeAssert(int i, int j, int *ErrCnt)
+        -:   12:{
+        8:   13:    if(i == j)
+        -:   14:    {
+        6:   15:        printf("TEST %d PASSED\n", *ErrCnt);
+        -:   16:    }
+        -:   17:    else
+        -:   18:    {
+        2:   19:        printf("TEST %d FAILED\n", *ErrCnt);
+        -:   20:    }
+        8:   21:    *ErrCnt = *ErrCnt+1;
+        8:   22:}
+        -:   23:
+        -:   24:/* * If the player after you has fewer than 2 cards left in his deck, he reveals all 
+        -:   25:         the cards in his deck, shuffles his discard pile (which does not include currently 
+        -:   26:         revealed cards), and then reveals the remainder needed. The player then discards the revealed cards.
+        -:   27:       * If the player after you does not have enough cards to reveal 2, he reveals what he can.
+        -:   28:       * You get bonuses for the types of cards revealed, counting only the different cards.
+        -:   29:       * A card with 2 types gives you both bonuses.
+        -:   30:         So if the player to your left reveals Copper and Harem, you get +$4 and +2 cards; 
+        -:   31:         if he reveals 2 Silvers, you just get +$2.  
+        -:   32:         Changed: for (i = 0; i <= 2; i ++) {
+        -:   33:        changed to: for (i = 0; i <= 1; i ++) {
+        -:   34:        Impact: There will only be max +2 gold for the player.
+        -:   35:        2. Removed: shuffle(nextPlayer,state);
+        -:   36:    I   mpact: If there are no available cards for next player their deck will not be shuffled.*/
+        -:   37:
+        1:   38:void main() 
+        -:   39:{
+        -:   40:    int i, j, m;
+        1:   41:    int handpos = 0, bonus = 0;
+        1:   42:    int seed = 1000;
+        -:   43:    //number of players
+        1:   44:    int numPlayers = 2;
+        1:   45:    int player=0;
+        -:   46:    //each holds a pointer to game state variable
+        -:   47:	struct gameState basePlayer, testPlayer;
+        -:   48:    //Kingdom cards avaliable for purchase
+        1:   49:	int k[10] = {adventurer, embargo, village, minion, mine, cutpurse,
+        -:   50:			sea_hag, tribute, smithy, council_room};
+        1:   51:	int ErrCnt=1;
+        -:   52:     int count, count2;
+        1:   53:    count = count2 = 0;
+        -:   54:
+        -:   55:
+        1:   56:    printf("TESTING - %s\n", CARD_TEST);
+        -:   57:
+        -:   58:	// 1 Initialize a game state and player cards
+        1:   59:	fakeAssert(initializeGame(numPlayers, k, seed, &basePlayer), 0, &ErrCnt);
+        -:   60:
+        -:   61:	//Copy the game state of player to testPlayer
+        1:   62:	memcpy(&testPlayer, &basePlayer, sizeof(struct gameState));
+        -:   63:
+        -:   64:    // 2 Check deck count is equal for both
+        1:   65:    fakeAssert( (*(int*)testPlayer.deckCount), (*(int*)basePlayer.deckCount), &ErrCnt);
+        -:   66:
+        -:   67:    // 3 Confirm 5 cards in each players deck
+        1:   68:    fakeAssert( (*(int*)testPlayer.deckCount), 5, &ErrCnt);
+        -:   69:
+        -:   70:    //Add tribute card to players hand
+        1:   71:    testPlayer.hand[player][testPlayer.handCount[player]] = tribute;
+        1:   72:    testPlayer.handCount[player]++;
+        -:   73:
+        -:   74:    // 4 Check that the tribute card count is +1 for testplayer
+        6:   75:    for (i = 0; i < basePlayer.handCount[player]; i++){
+        5:   76:        if(basePlayer.hand[player][i] = tribute);
+        5:   77:			count++;
+        -:   78:    } 
+        -:   79:	
+        7:   80:	for (i = 0; i < testPlayer.handCount[player]; i++){
+        6:   81:        if(testPlayer.hand[player][i] = tribute);
+        6:   82:			count2++;
+        -:   83:    }
+        1:   84:    fakeAssert(count, count2-1, &ErrCnt);
+        -:   85:    
+        -:   86:    // 5 See if hand count +1
+        1:   87:    fakeAssert(basePlayer.handCount[player] + 1, testPlayer.handCount[player], &ErrCnt);
+        -:   88:    
+        -:   89:    //printf("%d\n", handCard(0, &testPlayer));
+        -:   90:    
+        -:   91:    //Play tribute card with no options
+        1:   92:    cardEffect(tribute, 0, 0, 0, &testPlayer, handpos, &bonus);
+        -:   93:	
+        -:   94:    // 6 Check that TestPlayer hand count decresed by 1.
+        1:   95:	fakeAssert(testPlayer.handCount[player]-1, basePlayer.deckCount[player], &ErrCnt);
+        -:   96:	
+        -:   97:    // 7 Check that card has been added to played card count. 
+        1:   98:	fakeAssert(testPlayer.playedCardCount, basePlayer.playedCardCount+1, &ErrCnt);
+        -:   99:
+        -:  100:    //Necessary to detect inserted bug, put gold and copper at top of baseplayers deck. 
+        1:  101:    basePlayer.deck[player][(*(int*)basePlayer.deckCount) -1 ] = gold;
+        1:  102:    basePlayer.deck[player][(*(int*)basePlayer.deckCount)] = copper;
+        -:  103:
+        -:  104:    // 8 check that player only gained max +2 gold 
+        1:  105:    fakeAssert(testPlayer.coins+2, basePlayer.coins, &ErrCnt);
+        -:  106:
+        -:  107:
+        -:  108:
+        -:  109:
+        1:  110:}
+        -:  111:
+        -:  112:/*
+        -:  113:int refactoredTribute(struct gameState *state, int currentPlayer)
+        -:  114:{
+        -:  115:        int tributeRevealedCards[2] = {-1, -1};
+        -:  116:        int nextPlayer = currentPlayer + 1;
+        -:  117:        int i;
+        -:  118:        if ((state->discardCount[nextPlayer] + state->deckCount[nextPlayer]) <= 1) {
+        -:  119:            if (state->deckCount[nextPlayer] > 0) {
+        -:  120:                tributeRevealedCards[0] = state->deck[nextPlayer][state->deckCount[nextPlayer]-1];
+        -:  121:                state->deckCount[nextPlayer]--;
+        -:  122:            }
+        -:  123:            else if (state->discardCount[nextPlayer] > 0) {
+        -:  124:                tributeRevealedCards[0] = state->discard[nextPlayer][state->discardCount[nextPlayer]-1];
+        -:  125:                state->discardCount[nextPlayer]--;
+        -:  126:            }
+        -:  127:            else {
+        -:  128:                //No Card to Reveal
+        -:  129:                if (DEBUG) {
+        -:  130:                    printf("No cards to reveal\n");
+        -:  131:                }
+        -:  132:            }
+        -:  133:        }
+        -:  134:
+        -:  135:        else {
+        -:  136:            if (state->deckCount[nextPlayer] == 0) {
+        -:  137:                for (i = 0; i < state->discardCount[nextPlayer]; i++) {
+        -:  138:                    state->deck[nextPlayer][i] = state->discard[nextPlayer][i];//Move to deck
+        -:  139:                    state->deckCount[nextPlayer]++;
+        -:  140:                    state->discard[nextPlayer][i] = -1;
+        -:  141:                    state->discardCount[nextPlayer]--;
+        -:  142:                }     
+        -:  143:            }
+        -:  144:            tributeRevealedCards[0] = state->deck[nextPlayer][state->deckCount[nextPlayer]-1];
+        -:  145:            state->deck[nextPlayer][state->deckCount[nextPlayer]--] = -1;
+        -:  146:            state->deckCount[nextPlayer]--;
+        -:  147:            tributeRevealedCards[1] = state->deck[nextPlayer][state->deckCount[nextPlayer]-1];
+        -:  148:            state->deck[nextPlayer][state->deckCount[nextPlayer]--] = -1;
+        -:  149:            state->deckCount[nextPlayer]--;
+        -:  150:        }
+        -:  151:
+        -:  152:        if (tributeRevealedCards[0] == tributeRevealedCards[1]) { //If we have a duplicate card, just drop one
+        -:  153:            state->playedCards[state->playedCardCount] = tributeRevealedCards[1];
+        -:  154:            state->playedCardCount++;
+        -:  155:            tributeRevealedCards[1] = -1;
+        -:  156:        }
+        -:  157:
+        -:  158:        for (i = 0; i <= 1; i ++) {
+        -:  159:            if (tributeRevealedCards[i] == copper || tributeRevealedCards[i] == silver || tributeRevealedCards[i] == gold) { //Treasure cards
+        -:  160:                state->coins += 2;
+        -:  161:            }
+        -:  162:
+        -:  163:            else if (tributeRevealedCards[i] == estate || tributeRevealedCards[i] == duchy || tributeRevealedCards[i] == province || tributeRevealedCards[i] == gardens || tributeRevealedCards[i] == great_hall) { //Victory Card Found
+        -:  164:                drawCard(currentPlayer, state);
+        -:  165:                drawCard(currentPlayer, state);
+        -:  166:            }
+        -:  167:            else { //Action Card
+        -:  168:                state->numActions = state->numActions + 2;
+        -:  169:            }
+        -:  170:        }
+        -:  171:
+        -:  172:        return 0;
+        -:  173:}*/

@@ -1,0 +1,113 @@
+        -:    0:Source:unittest1.c
+        -:    0:Graph:unittest1.gcno
+        -:    0:Data:unittest1.gcda
+        -:    0:Runs:1
+        -:    0:Programs:1
+        -:    1:
+        -:    2:#include "dominion.h"
+        -:    3:#include "dominion_helpers.h"
+        -:    4:#include <string.h>
+        -:    5:#include <stdio.h>
+        -:    6:#include <assert.h>
+        -:    7:#include "rngs.h"
+        -:    8:
+        -:    9:#define CARD_TEST "Ambassador"
+        -:   10:
+        -:   11:
+        -:   12:/*  First you reveal a card from your hand.
+        -:   13:    Then take 0, 1, or 2 copies of that card from your hand and put them on top of their Supply pile.
+        -:   14:    Then each other player gains a copy of that card from the Supply.
+        -:   15:    If there are not enough copies to go around, deal them out in turn order, starting with the player to your left. */
+        -:   16:
+        -:   17://gcc -o unittest1 dominion.c rngs.c unittest1.c
+        -:   18:
+        8:   19:void fakeAssert(int i, int j, int *ErrCnt)
+        -:   20:{
+        8:   21:    if(i == j)
+        -:   22:    {
+        5:   23:        printf("TEST %d PASSED\n", *ErrCnt);
+        -:   24:    }
+        -:   25:    else
+        -:   26:    {
+        3:   27:        printf("TEST %d FAILED\n", *ErrCnt);
+        -:   28:    }
+        8:   29:    *ErrCnt = *ErrCnt+1;
+        -:   30:    
+        8:   31:}
+        -:   32:
+        1:   33:void main() 
+        -:   34:{
+        -:   35:    int i, j, m;
+        1:   36:    int handpos = 0, bonus = 0;
+        1:   37:    int seed = 1000;
+        -:   38:    //number of players
+        1:   39:    int numPlayers = 2;
+        1:   40:    int player=0;
+        -:   41:    //each holds a pointer to game state variable
+        -:   42:	struct gameState basePlayer, testPlayer;
+        -:   43:    //Kingdom cards avaliable for purchase
+        1:   44:	int k[10] = {adventurer, embargo, village, minion, mine, cutpurse,
+        -:   45:			sea_hag, tribute, smithy, council_room};
+        1:   46:    int ErrCnt = 1;
+        -:   47:    int count, count2;
+        1:   48:    count = count2 = 0;
+        -:   49:
+        -:   50:
+        1:   51:    printf("TESTING - %s\n", CARD_TEST);
+        -:   52:	
+        -:   53:    //Initialize a game state and player cards
+        1:   54:    fakeAssert(initializeGame(numPlayers, k, seed, &basePlayer), 0, &ErrCnt);
+        -:   55:
+        -:   56:	//Copy the game state of player to testPlayer
+        1:   57:	memcpy(&testPlayer, &basePlayer, sizeof(struct gameState));
+        -:   58:
+        -:   59:    // 2 Check deck count is equal for both
+        1:   60:    fakeAssert( (*(int*)testPlayer.deckCount), (*(int*)basePlayer.deckCount), &ErrCnt);
+        -:   61:
+        -:   62:    //Add ambassador card to players hand
+        1:   63:    testPlayer.hand[player][testPlayer.handCount[player]] = ambassador;
+        1:   64:    testPlayer.handCount[player]++;
+        -:   65:
+        -:   66:    // 2 Check that the ambassador card count is +1 for testplayer
+        6:   67:    for (i = 0; i < basePlayer.handCount[player]; i++){
+        5:   68:        if(basePlayer.hand[player+1][i] = ambassador);
+        5:   69:			count++;
+        -:   70:    }	
+        7:   71:	for (i = 0; i < testPlayer.handCount[player]; i++){
+        6:   72:        if(testPlayer.hand[player][i] = ambassador);
+        6:   73:			count2++;
+        -:   74:    }
+        1:   75:    fakeAssert(count+1, count2, &ErrCnt);
+        -:   76:    
+        1:   77:    fakeAssert(basePlayer.handCount[player] + 1, testPlayer.handCount[player], &ErrCnt);
+        -:   78:    
+        -:   79:    //Play ambassador card
+        1:   80:    cardEffect(ambassador, 0, 0, 0, &testPlayer, handpos, &bonus);
+        -:   81:	
+        -:   82:    ////////////////////////////////////////////////////////
+        -:   83:	
+        -:   84:	//Check the players hand count decresed after playing card
+        1:   85:    fakeAssert(basePlayer.handCount[player], testPlayer.handCount[player]-1, &ErrCnt);
+        -:   86:    
+        -:   87:    
+        -:   88:
+        -:   89:   
+        1:   90:    fakeAssert(testPlayer.numActions+1, basePlayer.numActions, &ErrCnt);
+        -:   91:    
+        -:   92:    //Reinitilize game
+        1:   93:    initializeGame(numPlayers, k, seed, &basePlayer);
+        1:   94:    memcpy(&testPlayer, &basePlayer, sizeof(struct gameState));
+        -:   95:    
+        -:   96:    //Add minion card to players hand
+        1:   97:    testPlayer.hand[player][testPlayer.handCount[player]] = minion;
+        1:   98:    testPlayer.handCount[player]++;
+        1:   99:    fakeAssert(basePlayer.handCount[player] + 1, testPlayer.handCount[player], &ErrCnt);
+        -:  100:
+        -:  101:    //Play minion card with second option
+        1:  102:	cardEffect(minion, 0, 1, 0, &testPlayer, handpos, &bonus);
+        -:  103:    
+        -:  104:    //Should both eq 4
+        1:  105:    fakeAssert(testPlayer.handCount[player], basePlayer.handCount[player], &ErrCnt);
+        -:  106: 
+        1:  107:}
+        -:  108:

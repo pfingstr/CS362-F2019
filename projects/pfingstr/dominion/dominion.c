@@ -214,7 +214,7 @@ int shuffle(int player, struct gameState *state) {
     /* SORT CARDS IN DECK TO ENSURE DETERMINISM! */
 
     while (state->deckCount[player] > 0) {
-        card = floor(Random() * state->deckCount[player]);
+        //card = floor(Random() * state->deckCount[player]);
         newDeck[newDeckPos] = state->deck[player][card];
         newDeckPos++;
         for (i = card; i < state->deckCount[player]-1; i++) {
@@ -744,7 +744,7 @@ int refactoredAmbassador(struct gameState *state, int choice1, int choice2, int 
 
 int refactoredBaron(struct gameState *state, int choice1, int currentPlayer)
 {
-    state->numBuys--;//Increase buys by 1!
+    state->numBuys--;//Increase buys by 1! BUG
         if (choice1 > 0) { //Boolean true or going to discard an estate
             int p = 0;//Iterator for hand!
             int card_not_discarded = 1;//Flag for discard set!
@@ -896,10 +896,12 @@ int refactoredTribute(struct gameState *state, int currentPlayer)
         if ((state->discardCount[nextPlayer] + state->deckCount[nextPlayer]) <= 1) {
             if (state->deckCount[nextPlayer] > 0) {
                 tributeRevealedCards[0] = state->deck[nextPlayer][state->deckCount[nextPlayer]-1];
+                
                 state->deckCount[nextPlayer]--;
             }
             else if (state->discardCount[nextPlayer] > 0) {
                 tributeRevealedCards[0] = state->discard[nextPlayer][state->discardCount[nextPlayer]-1];
+                //printf("%d\n", tributeRevealedCards[0]);
                 state->discardCount[nextPlayer]--;
             }
             else {
@@ -927,6 +929,7 @@ int refactoredTribute(struct gameState *state, int currentPlayer)
             tributeRevealedCards[1] = state->deck[nextPlayer][state->deckCount[nextPlayer]-1];
             state->deck[nextPlayer][state->deckCount[nextPlayer]--] = -1;
             state->deckCount[nextPlayer]--;
+            //printf("%d\n", tributeRevealedCards[0]);
         }
 
         if (tributeRevealedCards[0] == tributeRevealedCards[1]) { //If we have a duplicate card, just drop one

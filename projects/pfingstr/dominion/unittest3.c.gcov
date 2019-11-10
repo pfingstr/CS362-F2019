@@ -1,0 +1,132 @@
+        -:    0:Source:unittest3.c
+        -:    0:Graph:unittest3.gcno
+        -:    0:Data:unittest3.gcda
+        -:    0:Runs:1
+        -:    0:Programs:1
+        -:    1:
+        -:    2:#include "dominion.h"
+        -:    3:#include "dominion_helpers.h"
+        -:    4:#include <string.h>
+        -:    5:#include <stdio.h>
+        -:    6:#include <assert.h>
+        -:    7:#include "rngs.h"
+        -:    8:#include <stdlib.h>
+        -:    9:
+        -:   10:#define CARD_TEST "Mine"
+        -:   11:
+        -:   12://gcc -o unittest3 dominion.c rngs.c unittest3.c
+        -:   13:
+        6:   14:void fakeAssert(int i, int j, int *ErrCnt)
+        -:   15:{
+        6:   16:    if(i == j)
+        -:   17:    {
+        5:   18:        printf("TEST %d PASSED\n", *ErrCnt);
+        -:   19:    }
+        -:   20:    else
+        -:   21:    {
+        1:   22:        printf("TEST %d FAILED\n", *ErrCnt);
+        -:   23:    }
+        6:   24:    *ErrCnt = *ErrCnt+1;
+        -:   25:    
+        6:   26:}
+        -:   27:
+        1:   28:void main() 
+        -:   29:{
+        -:   30:    int i, j, m;
+        1:   31:    int handpos = 0, bonus = 0;
+        1:   32:    int seed = 1000;
+        -:   33:    //number of players
+        1:   34:    int numPlayers = 2;
+        1:   35:    int player=0;
+        -:   36:    //each holds a pointer to game state variable
+        -:   37:	struct gameState basePlayer, testPlayer;
+        -:   38:    //Kingdom cards avaliable for purchase
+        1:   39:	int k[10] = {adventurer, embargo, village, minion, mine, cutpurse,
+        -:   40:			sea_hag, tribute, smithy, council_room};
+        1:   41:    int ErrCnt = 1;
+        -:   42:    int count, count2;
+        1:   43:    count = count2 = 0;
+        -:   44:
+        -:   45:
+        1:   46:    printf("TESTING - %s\n", CARD_TEST);
+        -:   47:	
+        -:   48:    // 1 Initialize a game state and player cards
+        1:   49:    fakeAssert(initializeGame(numPlayers, k, seed, &basePlayer), 0, &ErrCnt);
+        -:   50:
+        -:   51:	//Copy the game state of player to testPlayer
+        1:   52:	memcpy(&testPlayer, &basePlayer, sizeof(struct gameState));
+        -:   53:
+        -:   54:    // 2 Check deck count is equal for both
+        1:   55:    fakeAssert( (*(int*)testPlayer.deckCount), (*(int*)basePlayer.deckCount), &ErrCnt);
+        -:   56:
+        -:   57:    //Add minion card to players hand at position 6
+        1:   58:    testPlayer.hand[player][testPlayer.handCount[player]] = mine;
+        1:   59:    testPlayer.handCount[player]++;
+        -:   60:    
+        -:   61:    // 3 Check that the mine card count is +1 for testplayer
+        6:   62:    for (i = 0; i < basePlayer.handCount[player]; i++){
+        5:   63:        if(basePlayer.hand[player+1][i] = mine);
+        5:   64:			count++;
+        -:   65:    }	
+        7:   66:	for (i = 0; i < testPlayer.handCount[player]; i++){
+        6:   67:        if(testPlayer.hand[player][i] = mine);
+        6:   68:			count2++;
+        -:   69:    }
+        1:   70:    fakeAssert(count+1, count2, &ErrCnt);
+        -:   71:
+        -:   72:    // 4 Check that the hand count increased
+        1:   73:    fakeAssert(basePlayer.handCount[player] + 1, testPlayer.handCount[player], &ErrCnt);
+        -:   74:    
+        1:   75:    testPlayer.hand[player][0] = copper;
+        1:   76:    testPlayer.hand[player][1] = gold;
+        -:   77:    
+        -:   78:    //Play mine card.
+        1:   79:    cardEffect(mine, copper, gold, 0, &testPlayer, handpos, &bonus);
+        -:   80:	
+        -:   81:    /////////////////////////////////////////////
+        -:   82:
+        -:   83:	// 5 Check for introduced bug test player should not gain/discard card.
+        1:   84:    fakeAssert((*(int*)testPlayer.handCount), (*(int*)basePlayer.handCount), &ErrCnt);
+        -:   85:
+        -:   86:    // 6 Check that test player has +2 coins vs base player
+        1:   87:    fakeAssert(testPlayer.coins, basePlayer.coins+2, &ErrCnt);
+        -:   88:    
+        1:   89:}
+        -:   90:
+        -:   91:/*int refactoredMine(struct gameState *state, int choice1, int choice2, int currentPlayer, int handPos)
+        -:   92:{
+        -:   93:    int i;
+        -:   94:    int j = state->hand[currentPlayer][choice1];  //store card we will trash
+        -:   95:
+        -:   96:        if (state->hand[currentPlayer][choice1] < copper || state->hand[currentPlayer][choice1] > gold)
+        -:   97:        {
+        -:   98:            return -1;
+        -:   99:        }
+        -:  100:
+        -:  101:        if (choice2 > treasure_map || choice2 < curse)
+        -:  102:        {
+        -:  103:            return -1;
+        -:  104:        }
+        -:  105:
+        -:  106:        if ( (getCost(state->hand[currentPlayer][choice1]) + 3) > getCost(choice2) )
+        -:  107:        {
+        -:  108:            return -1;
+        -:  109:        }
+        -:  110:
+        -:  111:        //gainCard(choice2, state, 2, currentPlayer); BUG INTRODUCED
+        -:  112:
+        -:  113:        //discard card from hand
+        -:  114:        //discardCard(handPos, currentPlayer, state, 0);  BUG INTRODUCED
+        -:  115:
+        -:  116:        //discard trashed card
+        -:  117:        for (i = 0; i < state->handCount[currentPlayer]; i++)
+        -:  118:        {
+        -:  119:            if (state->hand[currentPlayer][i] == j)
+        -:  120:            {
+        -:  121:                discardCard(i, currentPlayer, state, 0);
+        -:  122:                break;
+        -:  123:            }
+        -:  124:        }
+        -:  125:
+        -:  126:        return 0;
+        -:  127:}*/
