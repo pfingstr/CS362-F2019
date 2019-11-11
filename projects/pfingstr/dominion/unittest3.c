@@ -80,10 +80,13 @@ void main()
 	
     /////////////////////////////////////////////
 
-	// 5 Check for introduced bug test player should not gain/discard card.
+	// 5 Check for introduced bug 1 test player should not gain any cards
     fakeAssert((*(int*)testPlayer.handCount), (*(int*)basePlayer.handCount), &ErrCnt);
+    
+    //6 Check for bug 2 testplayer should not discard any cards.
+    fakeAssert((*(int*)testPlayer.discardCount), (*(int*)basePlayer.discardCount), &ErrCnt);
 
-    // 6 Check that test player has +2 coins vs base player
+    // 7 Check that test player has +2 coins vs base player
     fakeAssert(testPlayer.coins, basePlayer.coins+2, &ErrCnt);
     
 }
