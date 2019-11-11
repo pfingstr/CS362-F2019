@@ -1,7 +1,7 @@
         -:    0:Source:unittest3.c
         -:    0:Graph:unittest3.gcno
         -:    0:Data:unittest3.gcda
-        -:    0:Runs:1
+        -:    0:Runs:4
         -:    0:Programs:1
         -:    1:
         -:    2:#include "dominion.h"
@@ -16,101 +16,101 @@
         -:   11:
         -:   12://gcc -o unittest3 dominion.c rngs.c unittest3.c
         -:   13:
-function fakeAssert called 6 returned 100% blocks executed 100%
-        6:   14:void fakeAssert(int i, int j, int *ErrCnt)
+function fakeAssert called 24 returned 100% blocks executed 100%
+       24:   14:void fakeAssert(int i, int j, int *ErrCnt)
         -:   15:{
-        6:   16:    if(i == j)
+       24:   16:    if(i == j)
 branch  0 taken 83% (fallthrough)
 branch  1 taken 17%
         -:   17:    {
-        5:   18:        printf("TEST %d PASSED\n", *ErrCnt);
+       20:   18:        printf("TEST %d PASSED\n", *ErrCnt);
 call    0 returned 100%
         -:   19:    }
         -:   20:    else
         -:   21:    {
-        1:   22:        printf("TEST %d FAILED\n", *ErrCnt);
+        4:   22:        printf("TEST %d FAILED\n", *ErrCnt);
 call    0 returned 100%
         -:   23:    }
-        6:   24:    *ErrCnt = *ErrCnt+1;
+       24:   24:    *ErrCnt = *ErrCnt+1;
         -:   25:    
-        6:   26:}
+       24:   26:}
         -:   27:
-function main called 1 returned 100% blocks executed 100%
-        1:   28:void main() 
+function main called 4 returned 100% blocks executed 100%
+        4:   28:void main() 
         -:   29:{
         -:   30:    int i;
-        1:   31:    int handpos = 0, bonus = 0;
-        1:   32:    int seed = 1000;
+        4:   31:    int handpos = 0, bonus = 0;
+        4:   32:    int seed = 1000;
         -:   33:    //number of players
-        1:   34:    int numPlayers = 2;
-        1:   35:    int player=0;
+        4:   34:    int numPlayers = 2;
+        4:   35:    int player=0;
         -:   36:    //each holds a pointer to game state variable
         -:   37:	struct gameState basePlayer, testPlayer;
         -:   38:    //Kingdom cards avaliable for purchase
-        1:   39:	int k[10] = {adventurer, embargo, village, minion, mine, cutpurse,
+        4:   39:	int k[10] = {adventurer, embargo, village, minion, mine, cutpurse,
         -:   40:			sea_hag, tribute, smithy, council_room};
-        1:   41:    int ErrCnt = 1;
+        4:   41:    int ErrCnt = 1;
         -:   42:    int count, count2;
-        1:   43:    count = count2 = 0;
+        4:   43:    count = count2 = 0;
         -:   44:
         -:   45:
-        1:   46:    printf("TESTING - %s\n", CARD_TEST);
+        4:   46:    printf("TESTING - %s\n", CARD_TEST);
 call    0 returned 100%
         -:   47:	
         -:   48:    // 1 Initialize a game state and player cards
-        1:   49:    fakeAssert(initializeGame(numPlayers, k, seed, &basePlayer), 0, &ErrCnt);
+        4:   49:    fakeAssert(initializeGame(numPlayers, k, seed, &basePlayer), 0, &ErrCnt);
 call    0 returned 100%
 call    1 returned 100%
         -:   50:
         -:   51:	//Copy the game state of player to testPlayer
-        1:   52:	memcpy(&testPlayer, &basePlayer, sizeof(struct gameState));
+        4:   52:	memcpy(&testPlayer, &basePlayer, sizeof(struct gameState));
         -:   53:
         -:   54:    // 2 Check deck count is equal for both
-        1:   55:    fakeAssert( (*(int*)testPlayer.deckCount), (*(int*)basePlayer.deckCount), &ErrCnt);
+        4:   55:    fakeAssert( (*(int*)testPlayer.deckCount), (*(int*)basePlayer.deckCount), &ErrCnt);
 call    0 returned 100%
         -:   56:
         -:   57:    //Add minion card to players hand at position 6
-        1:   58:    testPlayer.hand[player][testPlayer.handCount[player]] = mine;
-        1:   59:    testPlayer.handCount[player]++;
+        4:   58:    testPlayer.hand[player][testPlayer.handCount[player]] = mine;
+        4:   59:    testPlayer.handCount[player]++;
         -:   60:    
         -:   61:    // 3 Check that the mine card count is +1 for testplayer
-        6:   62:    for (i = 0; i < basePlayer.handCount[player]; i++){
+       24:   62:    for (i = 0; i < basePlayer.handCount[player]; i++){
 branch  0 taken 83%
 branch  1 taken 17% (fallthrough)
-        5:   63:        if(basePlayer.hand[player+1][i] = mine);
-        5:   64:			count++;
+       20:   63:        if(basePlayer.hand[player+1][i] = mine);
+       20:   64:			count++;
         -:   65:    }	
-        7:   66:	for (i = 0; i < testPlayer.handCount[player]; i++){
+       28:   66:	for (i = 0; i < testPlayer.handCount[player]; i++){
 branch  0 taken 86%
 branch  1 taken 14% (fallthrough)
-        6:   67:        if(testPlayer.hand[player][i] = mine);
-        6:   68:			count2++;
+       24:   67:        if(testPlayer.hand[player][i] = mine);
+       24:   68:			count2++;
         -:   69:    }
-        1:   70:    fakeAssert(count+1, count2, &ErrCnt);
+        4:   70:    fakeAssert(count+1, count2, &ErrCnt);
 call    0 returned 100%
         -:   71:
         -:   72:    // 4 Check that the hand count increased
-        1:   73:    fakeAssert(basePlayer.handCount[player] + 1, testPlayer.handCount[player], &ErrCnt);
+        4:   73:    fakeAssert(basePlayer.handCount[player] + 1, testPlayer.handCount[player], &ErrCnt);
 call    0 returned 100%
         -:   74:    
-        1:   75:    testPlayer.hand[player][0] = copper;
-        1:   76:    testPlayer.hand[player][1] = gold;
+        4:   75:    testPlayer.hand[player][0] = copper;
+        4:   76:    testPlayer.hand[player][1] = gold;
         -:   77:    
         -:   78:    //Play mine card.
-        1:   79:    cardEffect(mine, copper, gold, 0, &testPlayer, handpos, &bonus);
+        4:   79:    cardEffect(mine, copper, gold, 0, &testPlayer, handpos, &bonus);
 call    0 returned 100%
         -:   80:	
         -:   81:    /////////////////////////////////////////////
         -:   82:
         -:   83:	// 5 Check for introduced bug test player should not gain/discard card.
-        1:   84:    fakeAssert((*(int*)testPlayer.handCount), (*(int*)basePlayer.handCount), &ErrCnt);
+        4:   84:    fakeAssert((*(int*)testPlayer.handCount), (*(int*)basePlayer.handCount), &ErrCnt);
 call    0 returned 100%
         -:   85:
         -:   86:    // 6 Check that test player has +2 coins vs base player
-        1:   87:    fakeAssert(testPlayer.coins, basePlayer.coins+2, &ErrCnt);
+        4:   87:    fakeAssert(testPlayer.coins, basePlayer.coins+2, &ErrCnt);
 call    0 returned 100%
         -:   88:    
-        1:   89:}
+        4:   89:}
         -:   90:
         -:   91:/*int refactoredMine(struct gameState *state, int choice1, int choice2, int currentPlayer, int handPos)
         -:   92:{

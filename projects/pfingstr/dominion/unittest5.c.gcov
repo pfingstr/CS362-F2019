@@ -1,7 +1,7 @@
         -:    0:Source:unittest5.c
         -:    0:Graph:unittest5.gcno
         -:    0:Data:unittest5.gcda
-        -:    0:Runs:1
+        -:    0:Runs:4
         -:    0:Programs:1
         -:    1:#include "dominion.h"
         -:    2:#include "dominion_helpers.h"
@@ -13,23 +13,23 @@
         -:    8:
         -:    9://gcc -o unittest5 dominion.c rngs.c unittest5.c .... /Desktop/cs362/CS362-F2019/projects/pfingstr/dominion
         -:   10:
-function fakeAssert called 8 returned 100% blocks executed 100%
-        8:   11:void fakeAssert(int i, int j, int *ErrCnt)
+function fakeAssert called 32 returned 100% blocks executed 100%
+       32:   11:void fakeAssert(int i, int j, int *ErrCnt)
         -:   12:{
-        8:   13:    if(i == j)
+       32:   13:    if(i == j)
 branch  0 taken 75% (fallthrough)
 branch  1 taken 25%
         -:   14:    {
-        6:   15:        printf("TEST %d PASSED\n", *ErrCnt);
+       24:   15:        printf("TEST %d PASSED\n", *ErrCnt);
 call    0 returned 100%
         -:   16:    }
         -:   17:    else
         -:   18:    {
-        2:   19:        printf("TEST %d FAILED\n", *ErrCnt);
+        8:   19:        printf("TEST %d FAILED\n", *ErrCnt);
 call    0 returned 100%
         -:   20:    }
-        8:   21:    *ErrCnt = *ErrCnt+1;
-        8:   22:}
+       32:   21:    *ErrCnt = *ErrCnt+1;
+       32:   22:}
         -:   23:
         -:   24:/* * If the player after you has fewer than 2 cards left in his deck, he reveals all 
         -:   25:         the cards in his deck, shuffles his discard pile (which does not include currently 
@@ -45,95 +45,95 @@ call    0 returned 100%
         -:   35:        2. Removed: shuffle(nextPlayer,state);
         -:   36:    I   mpact: If there are no available cards for next player their deck will not be shuffled.*/
         -:   37:
-function main called 1 returned 100% blocks executed 100%
-        1:   38:void main() 
+function main called 4 returned 100% blocks executed 100%
+        4:   38:void main() 
         -:   39:{
         -:   40:    int i;
-        1:   41:    int handpos = 0, bonus = 0;
-        1:   42:    int seed = 1000;
+        4:   41:    int handpos = 0, bonus = 0;
+        4:   42:    int seed = 1000;
         -:   43:    //number of players
-        1:   44:    int numPlayers = 2;
-        1:   45:    int player=0;
+        4:   44:    int numPlayers = 2;
+        4:   45:    int player=0;
         -:   46:    //each holds a pointer to game state variable
         -:   47:	struct gameState basePlayer, testPlayer;
         -:   48:    //Kingdom cards avaliable for purchase
-        1:   49:	int k[10] = {adventurer, embargo, village, minion, mine, cutpurse,
+        4:   49:	int k[10] = {adventurer, embargo, village, minion, mine, cutpurse,
         -:   50:			sea_hag, tribute, smithy, council_room};
-        1:   51:	int ErrCnt=1;
+        4:   51:	int ErrCnt=1;
         -:   52:     int count, count2;
-        1:   53:    count = count2 = 0;
+        4:   53:    count = count2 = 0;
         -:   54:
         -:   55:
-        1:   56:    printf("TESTING - %s\n", CARD_TEST);
+        4:   56:    printf("TESTING - %s\n", CARD_TEST);
 call    0 returned 100%
         -:   57:
         -:   58:	// 1 Initialize a game state and player cards
-        1:   59:	fakeAssert(initializeGame(numPlayers, k, seed, &basePlayer), 0, &ErrCnt);
+        4:   59:	fakeAssert(initializeGame(numPlayers, k, seed, &basePlayer), 0, &ErrCnt);
 call    0 returned 100%
 call    1 returned 100%
         -:   60:
         -:   61:	//Copy the game state of player to testPlayer
-        1:   62:	memcpy(&testPlayer, &basePlayer, sizeof(struct gameState));
+        4:   62:	memcpy(&testPlayer, &basePlayer, sizeof(struct gameState));
         -:   63:
         -:   64:    // 2 Check deck count is equal for both
-        1:   65:    fakeAssert( (*(int*)testPlayer.deckCount), (*(int*)basePlayer.deckCount), &ErrCnt);
+        4:   65:    fakeAssert( (*(int*)testPlayer.deckCount), (*(int*)basePlayer.deckCount), &ErrCnt);
 call    0 returned 100%
         -:   66:
         -:   67:    // 3 Confirm 5 cards in each players deck
-        1:   68:    fakeAssert( (*(int*)testPlayer.deckCount), 5, &ErrCnt);
+        4:   68:    fakeAssert( (*(int*)testPlayer.deckCount), 5, &ErrCnt);
 call    0 returned 100%
         -:   69:
         -:   70:    //Add tribute card to players hand
-        1:   71:    testPlayer.hand[player][testPlayer.handCount[player]] = tribute;
-        1:   72:    testPlayer.handCount[player]++;
+        4:   71:    testPlayer.hand[player][testPlayer.handCount[player]] = tribute;
+        4:   72:    testPlayer.handCount[player]++;
         -:   73:
         -:   74:    // 4 Check that the tribute card count is +1 for testplayer
-        6:   75:    for (i = 0; i < basePlayer.handCount[player]; i++){
+       24:   75:    for (i = 0; i < basePlayer.handCount[player]; i++){
 branch  0 taken 83%
 branch  1 taken 17% (fallthrough)
-        5:   76:        if(basePlayer.hand[player][i] = tribute);
-        5:   77:			count++;
+       20:   76:        if(basePlayer.hand[player][i] = tribute);
+       20:   77:			count++;
         -:   78:    } 
         -:   79:	
-        7:   80:	for (i = 0; i < testPlayer.handCount[player]; i++){
+       28:   80:	for (i = 0; i < testPlayer.handCount[player]; i++){
 branch  0 taken 86%
 branch  1 taken 14% (fallthrough)
-        6:   81:        if(testPlayer.hand[player][i] = tribute);
-        6:   82:			count2++;
+       24:   81:        if(testPlayer.hand[player][i] = tribute);
+       24:   82:			count2++;
         -:   83:    }
-        1:   84:    fakeAssert(count, count2-1, &ErrCnt);
+        4:   84:    fakeAssert(count, count2-1, &ErrCnt);
 call    0 returned 100%
         -:   85:    
         -:   86:    // 5 See if hand count +1
-        1:   87:    fakeAssert(basePlayer.handCount[player] + 1, testPlayer.handCount[player], &ErrCnt);
+        4:   87:    fakeAssert(basePlayer.handCount[player] + 1, testPlayer.handCount[player], &ErrCnt);
 call    0 returned 100%
         -:   88:    
         -:   89:    //printf("%d\n", handCard(0, &testPlayer));
         -:   90:    
         -:   91:    //Play tribute card with no options
-        1:   92:    cardEffect(tribute, 0, 0, 0, &testPlayer, handpos, &bonus);
+        4:   92:    cardEffect(tribute, 0, 0, 0, &testPlayer, handpos, &bonus);
 call    0 returned 100%
         -:   93:	
         -:   94:    // 6 Check that TestPlayer hand count decresed by 1.
-        1:   95:	fakeAssert(testPlayer.handCount[player]-1, basePlayer.deckCount[player], &ErrCnt);
+        4:   95:	fakeAssert(testPlayer.handCount[player]-1, basePlayer.deckCount[player], &ErrCnt);
 call    0 returned 100%
         -:   96:	
         -:   97:    // 7 Check that card has been added to played card count. 
-        1:   98:	fakeAssert(testPlayer.playedCardCount, basePlayer.playedCardCount+1, &ErrCnt);
+        4:   98:	fakeAssert(testPlayer.playedCardCount, basePlayer.playedCardCount+1, &ErrCnt);
 call    0 returned 100%
         -:   99:
         -:  100:    //Necessary to detect inserted bug, put gold and copper at top of baseplayers deck. 
-        1:  101:    basePlayer.deck[player][(*(int*)basePlayer.deckCount) -1 ] = gold;
-        1:  102:    basePlayer.deck[player][(*(int*)basePlayer.deckCount)] = copper;
+        4:  101:    basePlayer.deck[player][(*(int*)basePlayer.deckCount) -1 ] = gold;
+        4:  102:    basePlayer.deck[player][(*(int*)basePlayer.deckCount)] = copper;
         -:  103:
         -:  104:    // 8 check that player only gained max +2 gold 
-        1:  105:    fakeAssert(testPlayer.coins+2, basePlayer.coins, &ErrCnt);
+        4:  105:    fakeAssert(testPlayer.coins+2, basePlayer.coins, &ErrCnt);
 call    0 returned 100%
         -:  106:
         -:  107:
         -:  108:
         -:  109:
-        1:  110:}
+        4:  110:}
         -:  111:
         -:  112:/*
         -:  113:int refactoredTribute(struct gameState *state, int currentPlayer)

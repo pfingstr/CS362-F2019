@@ -33,7 +33,7 @@ void fakeAssert(int i, int j, int *ErrCnt)
 void main() 
 {
     int i;
-    
+
     int handpos = 0, bonus = 0;
     int seed = 1000;
     //number of players
@@ -51,7 +51,7 @@ void main()
 
     printf("TESTING - %s\n", CARD_TEST);
 	
-    //Initialize a game state and player cards
+    // 1 Initialize a game state and player cards
     fakeAssert(initializeGame(numPlayers, k, seed, &basePlayer), 0, &ErrCnt);
 
 	//Copy the game state of player to testPlayer
@@ -64,7 +64,7 @@ void main()
     testPlayer.hand[player][testPlayer.handCount[player]] = ambassador;
     testPlayer.handCount[player]++;
 
-    // 2 Check that the ambassador card count is +1 for testplayer
+    // 3 Check that the ambassador card count is +1 for testplayer
     for (i = 0; i < basePlayer.handCount[player]; i++){
         if(basePlayer.hand[player+1][i] = ambassador);
 			count++;
@@ -74,36 +74,17 @@ void main()
 			count2++;
     }
     fakeAssert(count+1, count2, &ErrCnt);
-    
+    // 4
     fakeAssert(basePlayer.handCount[player] + 1, testPlayer.handCount[player], &ErrCnt);
     
-    //Play ambassador card
-    cardEffect(ambassador, 0, 0, 0, &testPlayer, handpos, &bonus);
+    //Play ambassador card with a 3 for choice 1 and 0 for choice 2 to identify bug 1
+    cardEffect(ambassador, 3, 0, 0, &testPlayer, handpos, &bonus);
 	
     ////////////////////////////////////////////////////////
 	
-	//Check the players hand count decresed after playing card
-    fakeAssert(basePlayer.handCount[player], testPlayer.handCount[player]-1, &ErrCnt);
+	// 5 Check the players supplycount to identify bug 2 
+    fakeAssert((*(int*)basePlayer.supplyCount)+1, (*(int*)testPlayer.supplyCount), &ErrCnt);
     
-    
-
-   
-    fakeAssert(testPlayer.numActions+1, basePlayer.numActions, &ErrCnt);
-    
-    //Reinitilize game
-    initializeGame(numPlayers, k, seed, &basePlayer);
-    memcpy(&testPlayer, &basePlayer, sizeof(struct gameState));
-    
-    //Add minion card to players hand
-    testPlayer.hand[player][testPlayer.handCount[player]] = minion;
-    testPlayer.handCount[player]++;
-    fakeAssert(basePlayer.handCount[player] + 1, testPlayer.handCount[player], &ErrCnt);
-
-    //Play minion card with second option
-	cardEffect(minion, 0, 1, 0, &testPlayer, handpos, &bonus);
-    
-    //Should both eq 4
-    fakeAssert(testPlayer.handCount[player], basePlayer.handCount[player], &ErrCnt);
  
 }
 

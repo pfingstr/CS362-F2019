@@ -686,7 +686,7 @@ int refactoredAmbassador(struct gameState *state, int choice1, int choice2, int 
         int i;
         int j = 0;		//used to check if player has enough cards to discard
 
-        if (choice1 > 2 || choice1 < 0)
+        if (choice1 > 2 || choice2 < 0)
         {
             return -1;
         }

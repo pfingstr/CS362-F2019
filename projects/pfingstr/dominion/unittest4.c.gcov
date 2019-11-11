@@ -1,7 +1,7 @@
         -:    0:Source:unittest4.c
         -:    0:Graph:unittest4.gcno
         -:    0:Data:unittest4.gcda
-        -:    0:Runs:1
+        -:    0:Runs:4
         -:    0:Programs:1
         -:    1:#include "dominion.h"
         -:    2:#include "dominion_helpers.h"
@@ -15,87 +15,87 @@
         -:   10:
         -:   11://gcc -o unittest4 dominion.c rngs.c unittest4.c
         -:   12:
-function fakeAssert called 11 returned 100% blocks executed 100%
-       11:   13:void fakeAssert(int i, int j, int *ErrCnt)
+function fakeAssert called 44 returned 100% blocks executed 100%
+       44:   13:void fakeAssert(int i, int j, int *ErrCnt)
         -:   14:{
-       11:   15:    if(i == j)
+       44:   15:    if(i == j)
 branch  0 taken 64% (fallthrough)
 branch  1 taken 36%
         -:   16:    {
-        7:   17:        printf("TEST %d PASSED\n", *ErrCnt);
+       28:   17:        printf("TEST %d PASSED\n", *ErrCnt);
 call    0 returned 100%
         -:   18:    }
         -:   19:    else
         -:   20:    {
-        4:   21:        printf("TEST %d FAILED\n", *ErrCnt);
+       16:   21:        printf("TEST %d FAILED\n", *ErrCnt);
 call    0 returned 100%
         -:   22:    }
-       11:   23:    *ErrCnt = *ErrCnt+1;
+       44:   23:    *ErrCnt = *ErrCnt+1;
         -:   24:    
-       11:   25:}
+       44:   25:}
         -:   26:
-function main called 1 returned 100% blocks executed 100%
-        1:   27:void main() 
+function main called 4 returned 100% blocks executed 100%
+        4:   27:void main() 
         -:   28:{
         -:   29:    int i;
-        1:   30:    int handpos = 0, bonus = 0;
-        1:   31:    int seed = 1000;
+        4:   30:    int handpos = 0, bonus = 0;
+        4:   31:    int seed = 1000;
         -:   32:    //number of players
-        1:   33:    int numPlayers = 2;
-        1:   34:    int player=0;
+        4:   33:    int numPlayers = 2;
+        4:   34:    int player=0;
         -:   35:    //each holds a pointer to game state variable
         -:   36:	struct gameState basePlayer, testPlayer;
         -:   37:    //Kingdom cards avaliable for purchase
-        1:   38:	int k[10] = {adventurer, embargo, village, minion, mine, cutpurse,
+        4:   38:	int k[10] = {adventurer, embargo, village, minion, mine, cutpurse,
         -:   39:			sea_hag, tribute, smithy, council_room};
-        1:   40:    int ErrCnt = 1;
+        4:   40:    int ErrCnt = 1;
         -:   41:    int count, count2;
-        1:   42:    count = count2 = 0;
+        4:   42:    count = count2 = 0;
         -:   43:
         -:   44:
         -:   45:
-        1:   46:    printf("TESTING - %s\n", CARD_TEST);
+        4:   46:    printf("TESTING - %s\n", CARD_TEST);
 call    0 returned 100%
         -:   47:	
         -:   48:    // 1 Initialize a game state and player cards
-        1:   49:    fakeAssert(initializeGame(numPlayers, k, seed, &basePlayer), 0, &ErrCnt);
+        4:   49:    fakeAssert(initializeGame(numPlayers, k, seed, &basePlayer), 0, &ErrCnt);
 call    0 returned 100%
 call    1 returned 100%
         -:   50:
         -:   51:	//Copy the game state of player to testPlayer
-        1:   52:	memcpy(&testPlayer, &basePlayer, sizeof(struct gameState));
+        4:   52:	memcpy(&testPlayer, &basePlayer, sizeof(struct gameState));
         -:   53:
         -:   54:    // 2 Check deck count is equal for both
-        1:   55:    fakeAssert( (*(int*)testPlayer.deckCount), (*(int*)basePlayer.deckCount), &ErrCnt);
+        4:   55:    fakeAssert( (*(int*)testPlayer.deckCount), (*(int*)basePlayer.deckCount), &ErrCnt);
 call    0 returned 100%
         -:   56:
         -:   57:    //Add minion card to players hand at position 6
-        1:   58:    testPlayer.hand[player][testPlayer.handCount[player]] = minion;
-        1:   59:    testPlayer.handCount[player]++;
+        4:   58:    testPlayer.hand[player][testPlayer.handCount[player]] = minion;
+        4:   59:    testPlayer.handCount[player]++;
         -:   60:
         -:   61:    // 3 Check that the minion card count is +1 for testplayer
-        6:   62:    for (i = 0; i < basePlayer.handCount[player]; i++){
+       24:   62:    for (i = 0; i < basePlayer.handCount[player]; i++){
 branch  0 taken 83%
 branch  1 taken 17% (fallthrough)
-        5:   63:        if(basePlayer.hand[player][i] = minion);
-        5:   64:			count++;
+       20:   63:        if(basePlayer.hand[player][i] = minion);
+       20:   64:			count++;
         -:   65:    }
         -:   66:		
-        7:   67:	for (i = 0; i < testPlayer.handCount[player]; i++){
+       28:   67:	for (i = 0; i < testPlayer.handCount[player]; i++){
 branch  0 taken 86%
 branch  1 taken 14% (fallthrough)
-        6:   68:        if(testPlayer.hand[player][i] = minion);
-        6:   69:			count2++;
+       24:   68:        if(testPlayer.hand[player][i] = minion);
+       24:   69:			count2++;
         -:   70:    }
-        1:   71:    fakeAssert(count+1, count2, &ErrCnt);
+        4:   71:    fakeAssert(count+1, count2, &ErrCnt);
 call    0 returned 100%
         -:   72:    
         -:   73:    // 4 Check hand count +1
-        1:   74:    fakeAssert(basePlayer.handCount[player] + 1, testPlayer.handCount[player], &ErrCnt);
+        4:   74:    fakeAssert(basePlayer.handCount[player] + 1, testPlayer.handCount[player], &ErrCnt);
 call    0 returned 100%
         -:   75:    
         -:   76:    //Play minion card with +2 Gold option.
-        1:   77:    cardEffect(minion, 1, 0, 0, &testPlayer, handpos, &bonus);
+        4:   77:    cardEffect(minion, 1, 0, 0, &testPlayer, handpos, &bonus);
 call    0 returned 100%
         -:   78:	
         -:   79:	
@@ -107,44 +107,44 @@ call    0 returned 100%
         -:   85:    */
         -:   86:	
         -:   87:	// 5 Check the players hand count decreased after playing card
-        1:   88:    fakeAssert(basePlayer.handCount[player], testPlayer.handCount[player]-1, &ErrCnt);
+        4:   88:    fakeAssert(basePlayer.handCount[player], testPlayer.handCount[player]-1, &ErrCnt);
 call    0 returned 100%
         -:   89:    
         -:   90:    // 6 Check gold count option
-        1:   91:    fakeAssert(testPlayer.coins-2, basePlayer.coins, &ErrCnt);
+        4:   91:    fakeAssert(testPlayer.coins-2, basePlayer.coins, &ErrCnt);
 call    0 returned 100%
         -:   92:
         -:   93:    // 7 Check num action +1 for test player
-        1:   94:    fakeAssert(testPlayer.numActions+1, basePlayer.numActions, &ErrCnt);
+        4:   94:    fakeAssert(testPlayer.numActions+1, basePlayer.numActions, &ErrCnt);
 call    0 returned 100%
         -:   95:    
         -:   96:    //Reinitilize game
-        1:   97:    initializeGame(numPlayers, k, seed, &basePlayer);
+        4:   97:    initializeGame(numPlayers, k, seed, &basePlayer);
 call    0 returned 100%
-        1:   98:    memcpy(&testPlayer, &basePlayer, sizeof(struct gameState));
+        4:   98:    memcpy(&testPlayer, &basePlayer, sizeof(struct gameState));
         -:   99:    
         -:  100:    // 8 Add minion card to players hand and check hand count
-        1:  101:    testPlayer.hand[player][testPlayer.handCount[player]] = minion;
-        1:  102:    testPlayer.handCount[player]++;
-        1:  103:    fakeAssert(basePlayer.handCount[player] + 1, testPlayer.handCount[player], &ErrCnt);
+        4:  101:    testPlayer.hand[player][testPlayer.handCount[player]] = minion;
+        4:  102:    testPlayer.handCount[player]++;
+        4:  103:    fakeAssert(basePlayer.handCount[player] + 1, testPlayer.handCount[player], &ErrCnt);
 call    0 returned 100%
         -:  104:
         -:  105:    //Play minion card with second option
-        1:  106:	cardEffect(minion, 0, 1, 0, &testPlayer, handpos, &bonus);
+        4:  106:	cardEffect(minion, 0, 1, 0, &testPlayer, handpos, &bonus);
 call    0 returned 100%
         -:  107:    
         -:  108:    // 9 Hand count should equal 5 based on bug introduced
-        1:  109:    fakeAssert(5, testPlayer.handCount[player], &ErrCnt);
+        4:  109:    fakeAssert(5, testPlayer.handCount[player], &ErrCnt);
 call    0 returned 100%
         -:  110:    // 10 Hand count should equal 5 based on bug introduced
-        1:  111:    fakeAssert(5, basePlayer.handCount[player], &ErrCnt);
+        4:  111:    fakeAssert(5, basePlayer.handCount[player], &ErrCnt);
 call    0 returned 100%
         -:  112:    
         -:  113:    // 11 Check dicsard count
-        1:  114:    fakeAssert(testPlayer.discardCount[player], basePlayer.discardCount[player], &ErrCnt);
+        4:  114:    fakeAssert(testPlayer.discardCount[player], basePlayer.discardCount[player], &ErrCnt);
 call    0 returned 100%
         -:  115:
         -:  116:
-        1:  117:}
+        4:  117:}
         -:  118:
         -:  119:

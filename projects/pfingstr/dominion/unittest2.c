@@ -84,17 +84,37 @@ void main()
     //Play baron card with estate discard option
     cardEffect(baron, 1, 0, 0, &testPlayer, handpos, &bonus);
 	
-	///////////////////////////////////////////
-	
 	// 6 Check the players hand count decreased after playing card
     fakeAssert(basePlayer.handCount[player], testPlayer.handCount[player]-2, &ErrCnt);
     
-
-    // 7 Check gold count is +4 : its oddly +6
+    // 7 Check gold count is +4 : (its oddly +6)
     fakeAssert(testPlayer.coins-4, basePlayer.coins, &ErrCnt);
+
+    // 8 Detect bug 2 
+    fakeAssert(testPlayer.numBuys+1, basePlayer.numBuys, &ErrCnt);
+
+    //////////////////////////////////////////////////////////////
+
+    // 9 Initialize a game state and player cards
+    fakeAssert(initializeGame(numPlayers, k, seed, &basePlayer), 0, &ErrCnt);
+
+	//Copy the game state of player to testPlayer
+	memcpy(&testPlayer, &basePlayer, sizeof(struct gameState));
+
+    // 10 Check deck count is equal for both
+    fakeAssert( (*(int*)testPlayer.deckCount), (*(int*)basePlayer.deckCount), &ErrCnt);
+
+    //Add baron card to players hand at position 6
+    testPlayer.hand[player][testPlayer.handCount[player]] = baron;
+    testPlayer.handCount[player]++;
     
-    // 8 Check discard pile
-    fakeAssert(testPlayer.playedCardCount-2, basePlayer.playedCardCount, &ErrCnt);
+    //Play baron card with 0 card discard option
+    cardEffect(baron, 0, 0, 0, &testPlayer, handpos, &bonus);
+    
+    // 11 try to find bug 1 introduced unsuccesful! 
+    fakeAssert(basePlayer.supplyCount[estate], testPlayer.supplyCount[estate], &ErrCnt);
+    //printf("%d\n", basePlayer.supplyCount[estate]); 8
+    //printf("%d\n", testPlayer.supplyCount[estate]); 6
 }
 
 /*
