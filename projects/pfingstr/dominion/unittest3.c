@@ -27,7 +27,7 @@ void fakeAssert(int i, int j, int *ErrCnt)
 
 void main() 
 {
-    int i, j, m;
+    int i;
     int handpos = 0, bonus = 0;
     int seed = 1000;
     //number of players

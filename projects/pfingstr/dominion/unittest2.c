@@ -30,7 +30,7 @@ int supplyCount(int card, struct gameState *state); -How many of given card are 
 
 void main() 
 {
-    int i, j, m;
+    int i;
     int handpos = 0, bonus = 0;
     int seed = 1000;
     //number of players
@@ -63,11 +63,11 @@ void main()
     // 3 Check that the baron card count is +1 for testplayer
     for (i = 0; i < basePlayer.handCount[player]; i++){
         if(basePlayer.hand[player][i] = baron);
-			count++;
+			{count++;}
     }	
 	for (i = 0; i < testPlayer.handCount[player]; i++){
         if(testPlayer.hand[player][i] = baron);
-			count2++;
+			{count2++;}
     }
     fakeAssert(count+1, count2, &ErrCnt);
     
