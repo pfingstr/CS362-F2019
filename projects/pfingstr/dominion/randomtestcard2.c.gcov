@@ -1,0 +1,132 @@
+        -:    0:Source:randomtestcard2.c
+        -:    0:Graph:randomtestcard2.gcno
+        -:    0:Data:randomtestcard2.gcda
+        -:    0:Runs:3
+        -:    0:Programs:1
+        -:    0:Source is newer than graph
+        -:    1:#include <stdlib.h>
+        -:    2:#include <stdio.h>
+        -:    3:#include <math.h>
+        -:    4:#include "dominion.h"
+        -:    5:#include "dominion_helpers.h"
+        -:    6:#include "rngs.h"
+        -:    7:#define CARD_TEST "Minion"
+        -:    8:
+function main called 3 returned 100% blocks executed 100%
+        3:    9:int main (int argc, char** argv) {
+        3:   10:        int kingdom[10] = {adventurer, gardens, great_hall, village, council_room, mine, cutpurse, sea_hag, tribute, smithy};
+        3:   11:        int testSuccessful = 0;
+        3:   12:        int testFailed = 0;
+        -:   13:        int i; 
+        3:   14:        int tests = 100;
+        -:   15:
+      153:   16:        for(i = 0; i < tests; i++) {
+branch  0 taken 98%
+branch  1 taken 2% (fallthrough)
+        -:   17:
+      150:   18:                int num_players = rand() % 4;
+call    0 returned 100%
+      150:   19:                int p = 0;
+      150:   20:                int op = 1;
+      150:   21:                int rand_seed = rand();
+call    0 returned 100%
+      150:   22:                struct gameState *g = malloc(sizeof(struct gameState));
+      150:   23:                initializeGame(num_players, kingdom, rand_seed, g);
+call    0 returned 100%
+        -:   24:                //Randomize opponents info was useful for testing
+      150:   25:                int prev_op_deck = g->deckCount[op] = rand() % MAX_DECK;
+call    0 returned 100%
+      150:   26:                int prev_op_discard = g->discardCount[op] = rand() % MAX_DECK;
+call    0 returned 100%
+      150:   27:                int prev_op_hand = g->handCount[op] = rand() % MAX_HAND;
+call    0 returned 100%
+      150:   28:                int prev_op_act = g->numActions;
+        -:   29:
+      150:   30:                int prev_p_deck = g->deckCount[p] = rand() % MAX_DECK;//randomize deck size
+call    0 returned 100%
+      150:   31:                int prev_p_discard = g->discardCount[p] = rand() % MAX_DECK;//randomize discard size
+call    0 returned 100%
+      150:   32:                int prev_p_hand = g->handCount[p] = rand() % MAX_HAND;//randomize opponents hand size
+call    0 returned 100%
+      150:   33:                int prev_p_act = g->numActions; 
+      150:   34:                int prev_p_coins = g->coins;
+        -:   35:                
+        -:   36:                //printf("Pre P - deck:%d    discard:%d    hand:%d    act:%d\n", prev_p_deck, prev_p_discard, prev_p_hand, prev_p_act);
+      150:   37:                cardEffect(minion, 1, 1, 0, g, 0, 0);//play the card
+call    0 returned 100%
+        -:   38:                //printf("DeckCt:%d\n", g->deckCount[player]);
+        -:   39:                //printf("post P - deck:%d    discard:%d    hand:%d    act:%d\n\n", g->deckCount[p], g->discardCount[p], g->handCount[p], g->numActions);
+        -:   40:                //printf("coins:%d\n", g->coins);
+      150:   41:                if ((prev_p_hand + 1 == g->handCount[p]) && (prev_p_act + 5  == g->numActions) && (prev_p_coins + 2 == g->coins))
+branch  0 taken 98% (fallthrough)
+branch  1 taken 2%
+branch  2 taken 98% (fallthrough)
+branch  3 taken 2%
+branch  4 taken 100% (fallthrough)
+branch  5 taken 0%
+      144:   42:                {testSuccessful++;}
+        -:   43:                else
+        6:   44:                {testFailed++;}
+        -:   45:
+      150:   46:                free(g);
+        -:   47:        }
+        3:   48:        printf("Random Test 2: %s Card.\n", CARD_TEST);
+call    0 returned 100%
+        3:   49:        printf("Total Successful Tests: %d\nOut of: %d games\nTotal Failed Tests: %d", testSuccessful, tests, testFailed);
+call    0 returned 100%
+        -:   50:        return 0;
+        3:   51:}
+        -:   52://gcc -Wall -fprofile-arcs -ftest-coverage -o randomtestcard2 dominion.c rngs.c randomtestcard2.c
+        -:   53:
+        -:   54:/*int refactoredMinion(struct gameState *state, int choice1, int choice2, int currentPlayer, int handPos)
+        -:   55:{
+        -:   56:        int i, j;
+        -:   57:        //+1 action
+        -:   58:        state->numActions++;
+        -:   59:
+        -:   60:        //discard card from hand
+        -:   61:        discardCard(handPos, currentPlayer, state, 0);
+        -:   62:
+        -:   63:		if (choice1)
+        -:   64:        {
+        -:   65:            state->coins = state->coins + 2;
+        -:   66:        }
+        -:   67:        else if (choice2)		//discard hand, redraw 4, other players with 5+ cards discard hand and draw 4
+        -:   68:        {
+        -:   69:            //discard hand
+        -:   70:            while(numHandCards(state) > 0)
+        -:   71:            {
+        -:   72:                discardCard(handPos, currentPlayer, state, 0);
+        -:   73:            }
+        -:   74:
+        -:   75:            //draw 4
+        -:   76:            for (i = 0; i < 5; i++)
+        -:   77:            {
+        -:   78:                drawCard(currentPlayer, state);
+        -:   79:            }
+        -:   80:
+        -:   81:            //other players discard hand and redraw if hand size > 4
+        -:   82:            for (i = 0; i < state->numPlayers; i++)
+        -:   83:            {
+        -:   84:                if (i != currentPlayer)
+        -:   85:                {
+        -:   86:                    if ( state->handCount[i] > 4 )
+        -:   87:                    {
+        -:   88:                        //discard hand
+        -:   89:                        while( state->handCount[i] > 0 )
+        -:   90:                        {
+        -:   91:                            discardCard(handPos, i, state, 0);
+        -:   92:                        }
+        -:   93:
+        -:   94:                        //draw 4
+        -:   95:                        for (j = 0; j < 5; j++)
+        -:   96:                        {
+        -:   97:                            drawCard(i, state);
+        -:   98:                        }
+        -:   99:                    }
+        -:  100:                }
+        -:  101:            }
+        -:  102:
+        -:  103:        }
+        -:  104:        return 0;
+        -:  105:}*/

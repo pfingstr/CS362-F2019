@@ -1,0 +1,81 @@
+        -:    0:Source:randomtestcard1.c
+        -:    0:Graph:randomtestcard1.gcno
+        -:    0:Data:randomtestcard1.gcda
+        -:    0:Runs:1
+        -:    0:Programs:1
+        -:    0:Source is newer than graph
+        -:    1:#include <stdlib.h>
+        -:    2:#include <stdio.h>
+        -:    3:#include <math.h>
+        -:    4:#include "dominion.h"
+        -:    5:#include "dominion_helpers.h"
+        -:    6:#include "rngs.h"
+        -:    7:#define CARD_TEST "Baron"
+        -:    8:
+function main called 1 returned 100% blocks executed 100%
+        1:    9:int main (int argc, char** argv) {
+        1:   10:        int kingdom[10] = {adventurer, gardens, great_hall, village, council_room, mine, cutpurse, sea_hag, tribute, smithy};
+        1:   11:        int testSuccessful = 0;
+        1:   12:        int testFailed = 0;
+        -:   13:        int i; 
+        1:   14:        int tests = 100;
+        -:   15:
+       51:   16:        for(i = 0; i < tests; i++) {
+branch  0 taken 98%
+branch  1 taken 2% (fallthrough)
+        -:   17:
+       50:   18:                int num_players = rand() % 4;
+call    0 returned 100%
+       50:   19:                int p = 0;
+        -:   20:                //int op = 1;
+       50:   21:                int rand_seed = rand();
+call    0 returned 100%
+       50:   22:                struct gameState *g = malloc(sizeof(struct gameState));
+       50:   23:                initializeGame(num_players, kingdom, rand_seed, g);
+call    0 returned 100%
+        -:   24:                //Randomize opponents info was useful for testing
+        -:   25:                //int prev_op_deck = g->deckCount[op] = rand() % MAX_DECK;
+        -:   26:                //int prev_op_discard = g->discardCount[op] = rand() % MAX_DECK;
+        -:   27:                //int prev_op_hand = g->handCount[op] = rand() % MAX_HAND;
+        -:   28:                //int prev_op_act = g->numActions;
+        -:   29:
+        -:   30:                //int prev_p_deck = g->deckCount[p] = rand() % MAX_DECK;
+        -:   31:                //int prev_p_discard = g->discardCount[p] = rand() % MAX_DECK;
+       50:   32:                int prev_p_hand = g->handCount[p] = rand() % MAX_HAND;
+call    0 returned 100%
+        -:   33:                //int prev_p_act = g->numActions; 
+       50:   34:                int prev_p_buys = g->numBuys;
+       50:   35:                int prev_p_coins = g->coins;
+       50:   36:                int prev_p_estate = g->supplyCount[estate] = rand() % 20;
+call    0 returned 100%
+       50:   37:                printf("coins: %d\n", prev_p_coins);
+call    0 returned 100%
+        -:   38:                //printf("Pre P - deck:%d    discard:%d    hand:%d    act:%d\n", prev_p_deck, prev_p_discard, prev_p_hand, prev_p_act);
+       50:   39:                cardEffect(baron, 0, 0, 0, g, 0, 0);
+call    0 returned 100%
+       50:   40:                printf("post coins: %d\n", g->coins);
+call    0 returned 100%
+        -:   41:                //printf("post P - deck:%d    discard:%d    hand:%d    act:%d\n\n", g->deckCount[p], g->discardCount[p], g->handCount[p], g->numActions);
+        -:   42:              
+       50:   43:		if ((prev_p_estate - 2 == g->supplyCount[estate]) && (prev_p_buys + 1 == g->numBuys) 
+branch  0 taken 96% (fallthrough)
+branch  1 taken 4%
+branch  2 taken 100% (fallthrough)
+branch  3 taken 0%
+       48:   44:                && (prev_p_hand +1 == g->handCount[p]) && (prev_p_coins + 2 == g->coins))
+branch  0 taken 19% (fallthrough)
+branch  1 taken 81%
+branch  2 taken 100% (fallthrough)
+branch  3 taken 0%
+        9:   45:		{testSuccessful++;}
+        -:   46:		else
+       41:   47:		{testFailed++;}
+       50:   48:                free(g);
+        -:   49:        }
+        1:   50:        printf("Random Test 1: %s Card.\n", CARD_TEST);
+call    0 returned 100%
+        1:   51:        printf("Total Successful Tests: %d\nOut of: %d games\nTotal Failed Tests: %d", testSuccessful, tests, testFailed);
+call    0 returned 100%
+        -:   52:        return 0;
+        1:   53:}
+        -:   54://gcc -Wall -fprofile-arcs -ftest-coverage -o randomtestcard1 dominion.c rngs.c randomtestcard1.c

@@ -1,0 +1,176 @@
+        -:    0:Source:randomtestcard3.c
+        -:    0:Graph:randomtestcard3.gcno
+        -:    0:Data:randomtestcard3.gcda
+        -:    0:Runs:2
+        -:    0:Programs:1
+        -:    0:Source is newer than graph
+        -:    1:#include <stdlib.h>
+        -:    2:#include <stdio.h>
+        -:    3:#include <math.h>
+        -:    4:#include "dominion.h"
+        -:    5:#include "dominion_helpers.h"
+        -:    6:#include "rngs.h"
+        -:    7:#define CARD_TEST "Tribute"
+        -:    8:
+function main called 2 returned 100% blocks executed 100%
+        2:    9:int main (int argc, char** argv) {
+        2:   10:        int kingdom[10] = {adventurer, gardens, great_hall, village, council_room, mine, cutpurse, sea_hag, tribute, smithy};
+        2:   11:        int testSuccessful = 0;
+        2:   12:        int testFailed = 0;
+        -:   13:        int i; 
+        2:   14:        int tests = 100;
+        -:   15:
+      202:   16:        for(i = 0; i < tests; i++) {
+branch  0 taken 99%
+branch  1 taken 1% (fallthrough)
+        -:   17:
+      200:   18:                int num_players = rand() % 4;
+call    0 returned 100%
+      200:   19:                int p = 0;
+        -:   20:                //int op = 1;
+      200:   21:                int rand_seed = rand();
+call    0 returned 100%
+      200:   22:                struct gameState *g = malloc(sizeof(struct gameState));
+      200:   23:                initializeGame(num_players, kingdom, rand_seed, g);
+call    0 returned 100%
+        -:   24:
+        -:   25:				//Randomize opponents info was useful for testing
+        -:   26:                //int prev_op_deck = g->deckCount[op] = rand() % MAX_DECK;
+        -:   27:                //int prev_op_discard = g->discardCount[op] = rand() % MAX_DECK;
+        -:   28:                //int prev_op_hand = g->handCount[op] = rand() % MAX_HAND;
+        -:   29:                //int prev_op_act = g->numActions;
+        -:   30:
+        -:   31:                //int prev_p_deck = g->deckCount[p] = rand() % MAX_DECK;
+        -:   32:                //int prev_p_discard = g->discardCount[p] = rand() % MAX_DECK;
+      200:   33:                int prev_p_hand = g->handCount[p] = rand() % MAX_HAND;
+call    0 returned 100%
+      200:   34:                int prev_p_act = g->numActions; 
+        -:   35:                //int prev_p_buys = g->numBuys;
+        -:   36:                //int prev_p_coins = g->coins;
+        -:   37:                //int prev_p_estate = g->supplyCount[estate] = rand() % 10;
+        -:   38:		
+      200:   39:		cardEffect(tribute, 0, 0, 0, g, 0, 0);
+call    0 returned 100%
+        -:   40:	
+        -:   41:		//printf("pre actions:%d post actions:%d\n", prev_p_act, g->numActions);
+        -:   42:		//printf("%d, %d\n", g->hand[p][prev_p_hand], g->hand[p][prev_p_hand+1]);
+        -:   43:		/*int x, gld, cpr, sil, est;
+        -:   44:		gld = cpr = sil = est = 0;
+        -:   45:		for(x = 0 ; x < g->handCount[p]; x++) 
+        -:   46:		{
+        -:   47:			if(g->hand[p][x] == gold)
+        -:   48:			{gld++;}
+        -:   49:			else if(g->hand[p][x] == silver)
+        -:   50:			{sil++;}
+        -:   51:			else if(g->hand[p][x] == copper)
+        -:   52:			{cpr++;}
+        -:   53:			else if(g->hand[p][x] == estate)
+        -:   54:			{est++;}
+        -:   55:		}
+        -:   56:		printf("PRE: G:%d S:%d C:%d E:%d\n", gld,sil,cpr,est);
+        -:   57:		
+        -:   58:		cardEffect(tribute, 0, 0, 0, g, 0, 0);
+        -:   59:		int pgld, pcpr, psil, pest;
+        -:   60:		pgld = pcpr = psil = pest = 0;
+        -:   61:		for(x = 0 ; x < g->handCount[p]; x++) 
+        -:   62:		{
+        -:   63:			if(g->hand[p][x] == gold)
+        -:   64:			{pgld++;}
+        -:   65:			else if(g->hand[p][x] == silver)
+        -:   66:			{psil++;}
+        -:   67:			else if(g->hand[p][x] == copper)
+        -:   68:			{pcpr++;}
+        -:   69:			else if(g->hand[p][x] == estate)
+        -:   70:			{pest++;}
+        -:   71:		}
+        -:   72:		printf("POST: G:%d S:%d C:%d E:%d\n", pgld,psil,pcpr,pest);*/
+        -:   73:		//printf("pre coins:%d post coins:%d\n", prev_p_coins, g->coins);
+        -:   74:		//printf("Post OP - deck:%d    discard:%d    hand:%d\n", g->deckCount[op], g->discardCount[op], g->handCount[op]);
+        -:   75:        //printf("Post P - deck:%d    discard:%d    hand:%d\n\n", g->deckCount[p], g->discardCount[p], g->handCount[p]);
+        -:   76:		//Oponents deck count being decresed by 4 every play
+        -:   77:		//Players hand count increasing by 2 every play.
+        -:   78:		//Players num actions always increased by 4 every play of tribute meaning 
+        -:   79:		//Adding two #4 cards (copper) every turn.
+      200:   80:		
+branch  0 taken 29% (fallthrough)
+branch  1 taken 71%
+branch  2 taken 83% (fallthrough)
+branch  3 taken 17%
+       48:   81:		if ((prev_p_hand + 2 == g->handCount[p]) && (prev_p_act + 2  == g->numActions))
+        -:   82:                {testSuccessful++;}
+      152:   83:                else
+      200:   84:                {testFailed++;}
+        -:   85:		free(g);
+        2:   86:	}
+call    0 returned 100%
+        2:   87:       	printf("Random Test 3: %s Card.\n", CARD_TEST);
+call    0 returned 100%
+        2:   88:		printf("Total Successful Tests: %d\nOut of: %d games\nTotal Failed Tests: %d\n", testSuccessful, tests, testFailed);
+        -:   89:        return 0;
+        -:   90:}
+        -:   91:
+        -:   92://gcc -Wall -fprofile-arcs -ftest-coverage -o randomtestcard3 dominion.c rngs.c randomtestcard3.c
+        -:   93:/*int refactoredTribute(struct gameState *state, int currentPlayer)
+        -:   94:{
+        -:   95:        int tributeRevealedCards[2] = {-1, -1};
+        -:   96:        int nextPlayer = currentPlayer + 1;
+        -:   97:        int i;
+        -:   98:        if ((state->discardCount[nextPlayer] + state->deckCount[nextPlayer]) <= 1) {
+        -:   99:            if (state->deckCount[nextPlayer] > 0) {
+        -:  100:                tributeRevealedCards[0] = state->deck[nextPlayer][state->deckCount[nextPlayer]-1];
+        -:  101:                state->deckCount[nextPlayer]--;
+        -:  102:            }
+        -:  103:            else if (state->discardCount[nextPlayer] > 0) {
+        -:  104:                tributeRevealedCards[0] = state->discard[nextPlayer][state->discardCount[nextPlayer]-1];
+        -:  105:                state->discardCount[nextPlayer]--;
+        -:  106:            }
+        -:  107:            else {
+        -:  108:                //No Card to Reveal
+        -:  109:                if (DEBUG) {
+        -:  110:                    printf("No cards to reveal\n");
+        -:  111:                }
+        -:  112:            }
+        -:  113:        }
+        -:  114:
+        -:  115:        else {
+        -:  116:            if (state->deckCount[nextPlayer] == 0) {
+        -:  117:                for (i = 0; i < state->discardCount[nextPlayer]; i++) {
+        -:  118:                    state->deck[nextPlayer][i] = state->discard[nextPlayer][i];//Move to deck
+        -:  119:                    state->deckCount[nextPlayer]++;
+        -:  120:                    state->discard[nextPlayer][i] = -1;
+        -:  121:                    state->discardCount[nextPlayer]--;
+        -:  122:                }
+        -:  123:
+        -:  124:                
+        -:  125:            }
+        -:  126:            tributeRevealedCards[0] = state->deck[nextPlayer][state->deckCount[nextPlayer]-1];
+        -:  127:            state->deck[nextPlayer][state->deckCount[nextPlayer]--] = -1;
+        -:  128:            state->deckCount[nextPlayer]--;
+        -:  129:            tributeRevealedCards[1] = state->deck[nextPlayer][state->deckCount[nextPlayer]-1];
+        -:  130:            state->deck[nextPlayer][state->deckCount[nextPlayer]--] = -1;
+        -:  131:            state->deckCount[nextPlayer]--;
+        -:  132:        }
+        -:  133:
+        -:  134:        if (tributeRevealedCards[0] == tributeRevealedCards[1]) { //If we have a duplicate card, just drop one
+        -:  135:            state->playedCards[state->playedCardCount] = tributeRevealedCards[1];
+        -:  136:            state->playedCardCount++;
+        -:  137:            tributeRevealedCards[1] = -1;
+        -:  138:        }
+        -:  139:
+        -:  140:        for (i = 0; i <= 1; i ++) {
+        -:  141:            if (tributeRevealedCards[i] == copper || tributeRevealedCards[i] == silver || tributeRevealedCards[i] == gold) { //Treasure cards
+        -:  142:                state->coins += 2;
+        -:  143:            }
+        -:  144:
+        -:  145:            else if (tributeRevealedCards[i] == estate || tributeRevealedCards[i] == duchy || tributeRevealedCards[i] == province || tributeRevealedCards[i] == gardens || tributeRevealedCards[i] == great_hall) { //Victory Card Found
+        -:  146:                drawCard(currentPlayer, state);
+        -:  147:                drawCard(currentPlayer, state);
+        -:  148:            }
+        -:  149:            else { //Action Card
+        -:  150:                state->numActions = state->numActions + 2;
+        -:  151:            }
+        -:  152:        }
+        -:  153:
+        -:  154:        return 0;
+        -:  155:}
+        -:  156:*/

@@ -4,6 +4,7 @@
 #include <stdio.h>
 #include <math.h>
 #include <stdlib.h>
+#include <tgmath.h> 
 
 int compare(const void* a, const void* b) {
     if (*(int*)a > *(int*)b)
@@ -214,7 +215,7 @@ int shuffle(int player, struct gameState *state) {
     /* SORT CARDS IN DECK TO ENSURE DETERMINISM! */
 
     while (state->deckCount[player] > 0) {
-        card = floor(Random() * state->deckCount[player]);
+        card = (Random() * state->deckCount[player]);
         newDeck[newDeckPos] = state->deck[player][card];
         newDeckPos++;
         for (i = card; i < state->deckCount[player]-1; i++) {
@@ -744,7 +745,7 @@ int refactoredAmbassador(struct gameState *state, int choice1, int choice2, int 
 
 int refactoredBaron(struct gameState *state, int choice1, int currentPlayer)
 {
-    state->numBuys--;//Increase buys by 1!
+    state->numBuys++;//Increase buys by 1!
         if (choice1 > 0) { //Boolean true or going to discard an estate
             int p = 0;//Iterator for hand!
             int card_not_discarded = 1;//Flag for discard set!
