@@ -28,9 +28,9 @@ You may discard an Estate for +$4. If you don't, gain an Estate.
 int supplyCount(int card, struct gameState *state); -How many of given card are left in supply-
 */
 
-void main() 
+int main() 
 {
-    int i;
+    
     int handpos = 0, bonus = 0;
     int seed = 1000;
     //number of players
@@ -42,8 +42,8 @@ void main()
 	int k[10] = {adventurer, embargo, village, minion, mine, cutpurse,
 			sea_hag, tribute, smithy, council_room};
     int ErrCnt = 1;
-    int count, count2;
-    count = count2 = 0;
+    //int count, count2;
+    //count = count2 = 0;
 
     printf("TESTING - %s\n", CARD_TEST);
 	
@@ -99,6 +99,7 @@ void main()
     //printf("%d\n", basePlayer.supplyCount[estate]); 
     //printf("%d\n", testPlayer.supplyCount[estate]); 
 
+    return 0;
 }
 
 /*void baronEffect(int choice1, struct gameState *state, int currentPlayer)

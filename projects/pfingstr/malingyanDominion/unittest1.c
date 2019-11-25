@@ -29,9 +29,8 @@ void fakeAssert(int i, int j, int *ErrCnt)
     
 }
 
-void main() 
+int main() 
 {
-    int i;
 
     int handpos = 0, bonus = 0;
     int seed = 1000;
@@ -44,8 +43,8 @@ void main()
 	int k[10] = {adventurer, embargo, village, minion, mine, cutpurse,
 			sea_hag, tribute, smithy, council_room};
     int ErrCnt = 1;
-    int count, count2;
-    count = count2 = 0;
+    //int count, count2;
+    //count = count2 = 0;
 
 
     printf("TESTING - %s\n", CARD_TEST);
@@ -104,7 +103,7 @@ void main()
     for (i = 0; i < basePlayer.handCount[player]; i++){
         printf("b%d\n", basePlayer.hand[player][i]);
     }*/
-
+    return 0;
 }
 
 /*int ambassadorEffect(int choice1, int choice2, int handPos, struct gameState *state, int currentPlayer)

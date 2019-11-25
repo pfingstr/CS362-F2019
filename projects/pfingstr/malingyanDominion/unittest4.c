@@ -24,9 +24,9 @@ void fakeAssert(int i, int j, int *ErrCnt)
     
 }
 
-void main() 
+int main() 
 {
-    int i;
+    //int i;
     int handpos = 0, bonus = 0;
     int seed = 1000;
     //number of players
@@ -38,8 +38,8 @@ void main()
 	int k[10] = {adventurer, embargo, village, minion, mine, cutpurse,
 			sea_hag, tribute, smithy, council_room};
     int ErrCnt = 1;
-    int count, count2;
-    count = count2 = 0;
+   // int count, count2;
+   // count = count2 = 0;
 
 
 
@@ -47,7 +47,15 @@ void main()
 	
     // 1 Initialize a game state and player cards
     fakeAssert(initializeGame(numPlayers, k, seed, &basePlayer), 0, &ErrCnt);
-	//Copy the game state of player to testPlayer
+	
+    drawCard(player+1, &testPlayer);
+    drawCard(player+1, &testPlayer);
+    drawCard(player+1, &testPlayer);
+    drawCard(player+1, &testPlayer);
+    drawCard(player+1, &testPlayer);
+    printf("%d\n", testPlayer.handCount[player+1]);
+    
+    //Copy the game state of player to testPlayer
 	memcpy(&testPlayer, &basePlayer, sizeof(struct gameState));
     // 2 Check deck count is equal for both
     fakeAssert( (*(int*)testPlayer.deckCount), (*(int*)basePlayer.deckCount), &ErrCnt);
@@ -69,9 +77,8 @@ void main()
    // printf("%d\n", basePlayer.hand[1][0]);
     //int l = whoseTurn(&testPlayer);
     //  printf("%d\n", l);
-
-    //BUG 1 cant catch because the other player is not initilized, something very wrong with dominion.c initilizeGame()
-
+    
+    
 
 }
 

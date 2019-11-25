@@ -24,9 +24,8 @@ void fakeAssert(int i, int j, int *ErrCnt)
     
 }
 
-void main() 
+int main() 
 {
-    int i;
     int handpos = 0, bonus = 0;
     int seed = 1000;
     //number of players
@@ -38,8 +37,7 @@ void main()
 	int k[10] = {adventurer, embargo, village, minion, mine, cutpurse,
 			sea_hag, tribute, smithy, council_room};
     int ErrCnt = 1;
-    int count, count2;
-    count = count2 = 0;
+   
 
 
     printf("TESTING - %s\n", CARD_TEST);
@@ -63,9 +61,8 @@ void main()
     //Play mine card with out of bound '26' to detect bug 1
     l = cardEffect(mine, copper, 26, 0, &testPlayer, handpos, &bonus);
 	printf("%d\n", l);
-    //Cant find bug 1 because this should retunr -1 dont know why it isnt. 
+    //Cant find bug 1 because this should return -1 dont know why it isnt. 
 
-    
     //BUG 2 block
     fakeAssert(initializeGame(numPlayers, k, seed, &basePlayer), 0, &ErrCnt);
 	//Copy the game state of player to testPlayer
@@ -79,7 +76,7 @@ void main()
     //Detect Bug 2: mine card is never being discarded. 
     fakeAssert(mine, testPlayer.hand[player][0],&ErrCnt); 
 
-    
+    return 0;
 }
 
 /*int mineEffect(int choice1, int choice2, int currentPlayer, int handPos, struct gameState *state)
