@@ -1,0 +1,166 @@
+#include "dominion.h"
+#include "dominion_helpers.h"
+#include <string.h>
+#include <stdio.h>
+#include <assert.h>
+#include "rngs.h"
+
+#define CARD_TEST "Baron"
+
+//gcc -o unittest2 dominion.c rngs.c unittest2.c
+
+void fakeAssert(int i, int j, int *ErrCnt)
+{
+    if(i == j)
+    {
+        printf("TEST %d PASSED\n", *ErrCnt);
+    }
+    else
+    {
+        printf("TEST %d FAILED\n", *ErrCnt);
+    }
+    *ErrCnt = *ErrCnt+1;
+    
+}
+
+/* +1 Buy
+You may discard an Estate for +$4. If you don't, gain an Estate. 
+int supplyCount(int card, struct gameState *state); -How many of given card are left in supply-
+*/
+
+void main() 
+{
+    int i;
+    int handpos = 0, bonus = 0;
+    int seed = 1000;
+    //number of players
+    int numPlayers = 2;
+    int player=0;
+    //each holds a pointer to game state variable
+	struct gameState basePlayer, testPlayer;
+    //Kingdom cards avaliable for purchase
+	int k[10] = {adventurer, embargo, village, minion, mine, cutpurse,
+			sea_hag, tribute, smithy, council_room};
+    int ErrCnt = 1;
+    int count, count2;
+    count = count2 = 0;
+
+    printf("TESTING - %s\n", CARD_TEST);
+	
+    // 1 Initialize a game state and player cards
+    fakeAssert(initializeGame(numPlayers, k, seed, &basePlayer), 0, &ErrCnt);
+
+	//Copy the game state of player to testPlayer
+	memcpy(&testPlayer, &basePlayer, sizeof(struct gameState));
+
+    // 2 Check deck count is equal for both
+    fakeAssert( (*(int*)testPlayer.deckCount), (*(int*)basePlayer.deckCount), &ErrCnt);
+
+    //Add baron card to players hand at position 6
+    testPlayer.hand[player][testPlayer.handCount[player]] = baron;
+    testPlayer.handCount[player]++;
+    
+    // 3 Check that hand count +1
+    fakeAssert(basePlayer.handCount[player] + 1, testPlayer.handCount[player], &ErrCnt);
+
+    //Add estate card to players hand at position 7
+    testPlayer.hand[player][testPlayer.handCount[player]] = estate;
+    testPlayer.handCount[player]++;
+    
+    // 4 Check that card was added to hand count
+    fakeAssert(basePlayer.handCount[player] + 2, testPlayer.handCount[player], &ErrCnt);
+    
+    /////////////////////PLAY CARD////////////////////////////////
+    //Play baron card with estate discard option to detect bug 1
+    cardEffect(baron, 1, 0, 0, &testPlayer, handpos, &bonus);
+	
+	// 5 Check the players hand count decreased after playing card
+    fakeAssert(basePlayer.handCount[player], testPlayer.handCount[player]-1, &ErrCnt);
+    
+    // 6 Check gold count is +4 :
+    fakeAssert(testPlayer.coins-4, basePlayer.coins, &ErrCnt);
+
+    //////////////////////////////////////////////////////////////
+
+    // 7 Initialize a game state and player cards
+    fakeAssert(initializeGame(numPlayers, k, seed, &basePlayer), 0, &ErrCnt);
+    //Set estate ct to 1
+    basePlayer.supplyCount[estate]=1;
+	//Copy the game state of player to testPlayer
+	memcpy(&testPlayer, &basePlayer, sizeof(struct gameState));
+    //Add baron card to players hand at position 6
+    testPlayer.hand[player][testPlayer.handCount[player]] = baron;
+    testPlayer.handCount[player]++; 
+    //Play baron card with 0 card discard option
+    cardEffect(baron, 0, 0, 0, &testPlayer, handpos, &bonus);
+    // 8 try to find bug 2, we see that testplayer is not checking for 0 estates in supply. 
+    fakeAssert(-1, testPlayer.supplyCount[estate], &ErrCnt);
+    
+    //printf("%d\n", basePlayer.supplyCount[estate]); 
+    //printf("%d\n", testPlayer.supplyCount[estate]); 
+
+}
+
+/*void baronEffect(int choice1, struct gameState *state, int currentPlayer)
+{
+    state->numBuys++; //Increase buys by 1!
+    if (choice1 > 0)
+    {                               //Boolean true or going to discard an estate
+        int p = 0;                  //Iterator for hand!
+        int card_not_discarded = 1; //Flag for discard set!
+        while (card_not_discarded)
+        {
+            if (state->hand[currentPlayer][p] == estate)
+            {                      //Found an estate card!
+                state->coins += 4; //Add 4 coins to the amount of coins
+                state->discard[currentPlayer][state->discardCount[currentPlayer]] = state->hand[currentPlayer][p];
+                state->discardCount[currentPlayer]++;
+                for (; p < state->handCount[currentPlayer]; p++)
+                {
+                    state->hand[currentPlayer][p] = state->hand[currentPlayer][p + 1];
+                }
+                state->hand[currentPlayer][state->handCount[currentPlayer]] = -1;
+                state->handCount[currentPlayer]--;
+                //bug 1 for baronEffect() function
+                // card_not_discarded = 0;//Exit the loop
+            }
+            else if (p > state->handCount[currentPlayer])
+            {
+                if (DEBUG)
+                {
+                    printf("No estate cards in your hand, invalid choice\n");
+                    printf("Must gain an estate if there are any\n");
+                }
+                if (supplyCount(estate, state) > 0)
+                {
+                    gainCard(estate, state, 0, currentPlayer);
+
+                    state->supplyCount[estate]--; //Decrement estates
+                    if (supplyCount(estate, state) == 0)
+                    {
+                        isGameOver(state);
+                    }
+                }
+                card_not_discarded = 0; //Exit the loop
+            }
+
+            else
+            {
+                p++; //Next card
+            }
+        }
+    }
+    else
+    {
+        if (supplyCount(estate, state) > 0)
+        {
+            gainCard(estate, state, 0, currentPlayer); //Gain an estate
+
+            state->supplyCount[estate]--; //Decrement Estates
+                                          // bug 2 for baronEffect() function
+                                          // if (supplyCount(estate, state) == 0) {
+                                          //   isGameOver(state);
+                                          // }
+        }
+    }
+}*/
