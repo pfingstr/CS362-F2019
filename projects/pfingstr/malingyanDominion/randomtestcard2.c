@@ -17,24 +17,25 @@ int main (int argc, char** argv) {
 
                 int num_players = rand() % 4;
                 int p = 0;
-                //int op = 1;
+                int op = 1;
                 int rand_seed = rand();
                 struct gameState *g = malloc(sizeof(struct gameState));
                 initializeGame(num_players, kingdom, rand_seed, g);
                 //Randomize opponents info was useful for testing
-                //int prev_op_deck = g->deckCount[op] = rand() % MAX_DECK;
-                //int prev_op_discard = g->discardCount[op] = rand() % MAX_DECK;
-                //int prev_op_hand = g->handCount[op] = rand() % MAX_HAND;
-                //int prev_op_act = g->numActions;
+                int prev_op_deck = g->deckCount[op] = rand() % MAX_DECK;
+                int prev_op_discard = g->discardCount[op] = rand() % MAX_DECK;
+                int prev_op_hand = g->handCount[op] = rand() % MAX_HAND;
+                int prev_op_act = g->numActions;
 
-                //int prev_p_deck = g->deckCount[p] = rand() % MAX_DECK;//randomize deck size
-                //int prev_p_discard = g->discardCount[p] = rand() % MAX_DECK;//randomize discard size
+                int prev_p_deck = g->deckCount[p] = rand() % MAX_DECK;//randomize deck size
+                int prev_p_discard = g->discardCount[p] = rand() % MAX_DECK;//randomize discard size
                 int prev_p_hand = g->handCount[p] = rand() % MAX_HAND;//randomize opponents hand size
                 int prev_p_act = g->numActions; 
                 int prev_p_coins = g->coins;
                 
-                //printf("Pre P - deck:%d    discard:%d    hand:%d    act:%d\n", prev_p_deck, prev_p_discard, prev_p_hand, prev_p_act);
-                cardEffect(minion, 1, 1, 0, g, 0, 0);//play the card
+                printf("Pre OP - deck:%d    discard:%d    hand:%d    act:%d\n", prev_op_deck, prev_op_discard, prev_op_hand, prev_op_act);
+                cardEffect(minion, 1, 1, 0, g, 0, 0);
+                printf("Post OP - deck:%d    discard:%d    hand:%d    act:%d\n", g->deckCount[op], g->discardCount[op], g->handCount[op], g->numActions);
                 //printf("DeckCt:%d\n", g->deckCount[player]);
                 //printf("post P - deck:%d    discard:%d    hand:%d    act:%d\n\n", g->deckCount[p], g->discardCount[p], g->handCount[p], g->numActions);
                 //printf("coins:%d\n", g->coins);
@@ -50,3 +51,59 @@ int main (int argc, char** argv) {
         return 0;
 }
 //gcc -Wall -fprofile-arcs -ftest-coverage -o randomtestcard2 dominion.c rngs.c randomtestcard2.c
+/*void minionEffect(int handPos, int choice1, int choice2, struct gameState *state, int currentPlayer)
+{
+    int i;
+    int j;
+
+    //+1 action
+    state->numActions++;
+
+    //discard card from hand
+    discardCard(handPos, currentPlayer, state, 0);
+
+    if (choice1)
+    {
+        state->coins = state->coins + 2;
+    }
+    else if (choice2) //discard hand, redraw 4, other players with 5+ cards discard hand and draw 4
+    {
+        //discard hand
+        while (numHandCards(state) > 0)
+        {
+            discardCard(handPos, currentPlayer, state, 0);
+        }
+
+        //draw 4
+        for (i = 0; i < 4; i++)
+        {
+            //minoinEffect() bug 2
+            gainCard(estate, state, 2, currentPlayer);
+            //drawCard(currentPlayer, state);
+        }
+
+        //other players discard hand and redraw if hand size > 4
+        for (i = 0; i < state->numPlayers; i++)
+        {
+            if (i != currentPlayer)
+            {
+                //minionEffect() bug 1
+                if (state->handCount[i] > 5)
+                // if ( state->handCount[i] > 4 )
+                {
+                    //discard hand
+                    while (state->handCount[i] > 0)
+                    {
+                        discardCard(handPos, i, state, 0);
+                    }
+
+                    //draw 4
+                    for (j = 0; j < 4; j++)
+                    {
+                        drawCard(i, state);
+                    }
+                }
+            }
+        }
+    }
+}*/

@@ -94,15 +94,10 @@ int main()
         printf("B%d\n", basePlayer.hand[player][i]);
     }*/
     ////////////////////PLAY CARD//////////////////////////////
-    //Play ambassador card with a 3 for choice 1 and 0 for choice 2 
-    cardEffect(ambassador, 3, 2, 0, &testPlayer, handpos, &bonus);
-    
-    /*for (i = 0; i < testPlayer.handCount[player]; i++){
-        printf("t%d\n", testPlayer.hand[player][i]);
-    }
-    for (i = 0; i < basePlayer.handCount[player]; i++){
-        printf("b%d\n", basePlayer.hand[player][i]);
-    }*/
+    //Play ambassador card with a 3 for choice 1 and -2(illegal) for choice 2 
+    int l;
+    l = cardEffect(ambassador, 3, -2, 0, &testPlayer, handpos, &bonus);
+    fakeAssert(l, -1, &ErrCnt);
     return 0;
 }
 
