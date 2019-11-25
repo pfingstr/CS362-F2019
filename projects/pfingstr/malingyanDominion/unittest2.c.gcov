@@ -14,15 +14,20 @@
         -:    9:
         -:   10://gcc -o unittest2 dominion.c rngs.c unittest2.c
         -:   11:
+function fakeAssert called 8 returned 100% blocks executed 75%
         8:   12:void fakeAssert(int i, int j, int *ErrCnt)
         -:   13:{
         8:   14:    if(i == j)
+branch  0 taken 100% (fallthrough)
+branch  1 taken 0%
         -:   15:    {
         8:   16:        printf("TEST %d PASSED\n", *ErrCnt);
+call    0 returned 100%
         -:   17:    }
         -:   18:    else
         -:   19:    {
     #####:   20:        printf("TEST %d FAILED\n", *ErrCnt);
+call    0 never executed
         -:   21:    }
         8:   22:    *ErrCnt = *ErrCnt+1;
         -:   23:    
@@ -33,6 +38,7 @@
         -:   28:int supplyCount(int card, struct gameState *state); -How many of given card are left in supply-
         -:   29:*/
         -:   30:
+function main called 1 returned 100% blocks executed 100%
         1:   31:int main() 
         -:   32:{
         -:   33:    
@@ -51,15 +57,19 @@
         -:   46:    //count = count2 = 0;
         -:   47:
         1:   48:    printf("TESTING - %s\n", CARD_TEST);
+call    0 returned 100%
         -:   49:	
         -:   50:    // 1 Initialize a game state and player cards
         1:   51:    fakeAssert(initializeGame(numPlayers, k, seed, &basePlayer), 0, &ErrCnt);
+call    0 returned 100%
+call    1 returned 100%
         -:   52:
         -:   53:	//Copy the game state of player to testPlayer
         1:   54:	memcpy(&testPlayer, &basePlayer, sizeof(struct gameState));
         -:   55:
         -:   56:    // 2 Check deck count is equal for both
         1:   57:    fakeAssert( (*(int*)testPlayer.deckCount), (*(int*)basePlayer.deckCount), &ErrCnt);
+call    0 returned 100%
         -:   58:
         -:   59:    //Add baron card to players hand at position 6
         1:   60:    testPlayer.hand[player][testPlayer.handCount[player]] = baron;
@@ -67,6 +77,7 @@
         -:   62:    
         -:   63:    // 3 Check that hand count +1
         1:   64:    fakeAssert(basePlayer.handCount[player] + 1, testPlayer.handCount[player], &ErrCnt);
+call    0 returned 100%
         -:   65:
         -:   66:    //Add estate card to players hand at position 7
         1:   67:    testPlayer.hand[player][testPlayer.handCount[player]] = estate;
@@ -74,21 +85,27 @@
         -:   69:    
         -:   70:    // 4 Check that card was added to hand count
         1:   71:    fakeAssert(basePlayer.handCount[player] + 2, testPlayer.handCount[player], &ErrCnt);
+call    0 returned 100%
         -:   72:    
         -:   73:    /////////////////////PLAY CARD////////////////////////////////
         -:   74:    //Play baron card with estate discard option to detect bug 1
         1:   75:    cardEffect(baron, 1, 0, 0, &testPlayer, handpos, &bonus);
+call    0 returned 100%
         -:   76:	
         -:   77:	// 5 Check the players hand count decreased after playing card
         1:   78:    fakeAssert(basePlayer.handCount[player], testPlayer.handCount[player]-1, &ErrCnt);
+call    0 returned 100%
         -:   79:    
         -:   80:    // 6 Check gold count is +4 :
         1:   81:    fakeAssert(testPlayer.coins-4, basePlayer.coins, &ErrCnt);
+call    0 returned 100%
         -:   82:
         -:   83:    //////////////////////////////////////////////////////////////
         -:   84:
         -:   85:    // 7 Initialize a game state and player cards
         1:   86:    fakeAssert(initializeGame(numPlayers, k, seed, &basePlayer), 0, &ErrCnt);
+call    0 returned 100%
+call    1 returned 100%
         -:   87:    //Set estate ct to 1
         1:   88:    basePlayer.supplyCount[estate]=1;
         -:   89:	//Copy the game state of player to testPlayer
@@ -98,8 +115,10 @@
         1:   93:    testPlayer.handCount[player]++; 
         -:   94:    //Play baron card with 0 card discard option
         1:   95:    cardEffect(baron, 0, 0, 0, &testPlayer, handpos, &bonus);
+call    0 returned 100%
         -:   96:    // 8 try to find bug 2, we see that testplayer is not checking for 0 estates in supply. 
         1:   97:    fakeAssert(-1, testPlayer.supplyCount[estate], &ErrCnt);
+call    0 returned 100%
         -:   98:    
         -:   99:    //printf("%d\n", basePlayer.supplyCount[estate]); 
         -:  100:    //printf("%d\n", testPlayer.supplyCount[estate]); 

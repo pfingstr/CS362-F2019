@@ -35,9 +35,9 @@ void fakeAssert(int i, int j, int *ErrCnt)
         2. Removed: shuffle(nextPlayer,state);
     I   mpact: If there are no available cards for next player their deck will not be shuffled.*/
 
-void main() 
+int main() 
 {
-    int i;
+    //int i;
     int handpos = 0, bonus = 0;
     int seed = 1000;
     //number of players
@@ -49,8 +49,8 @@ void main()
 	int k[10] = {adventurer, embargo, village, minion, mine, cutpurse,
 			sea_hag, tribute, smithy, council_room};
 	int ErrCnt=1;
-     int count, count2;
-    count = count2 = 0;
+     //int count, count2;
+    //count = count2 = 0;
 
 
     printf("TESTING - %s\n", CARD_TEST);
@@ -76,7 +76,7 @@ void main()
     cardEffect(tribute, 0, 0, 0, &testPlayer, handpos, &bonus);
 	
 
-    
+    return 0;
 
 }
 

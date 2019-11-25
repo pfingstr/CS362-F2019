@@ -20,20 +20,26 @@
         -:   15:
         -:   16://gcc -o unittest1 dominion.c rngs.c unittest1.c
         -:   17:
+function fakeAssert called 8 returned 100% blocks executed 100%
         8:   18:void fakeAssert(int i, int j, int *ErrCnt)
         -:   19:{
         8:   20:    if(i == j)
+branch  0 taken 88% (fallthrough)
+branch  1 taken 13%
         -:   21:    {
         7:   22:        printf("TEST %d PASSED\n", *ErrCnt);
+call    0 returned 100%
         -:   23:    }
         -:   24:    else
         -:   25:    {
         1:   26:        printf("TEST %d FAILED\n", *ErrCnt);
+call    0 returned 100%
         -:   27:    }
         8:   28:    *ErrCnt = *ErrCnt+1;
         -:   29:    
         8:   30:}
         -:   31:
+function main called 1 returned 100% blocks executed 100%
         1:   32:int main() 
         -:   33:{
         -:   34:
@@ -53,15 +59,19 @@
         -:   48:
         -:   49:
         1:   50:    printf("TESTING - %s\n", CARD_TEST);
+call    0 returned 100%
         -:   51:	
         -:   52:    // 1 Initialize a game state and player cards
         1:   53:    fakeAssert(initializeGame(numPlayers, k, seed, &basePlayer), 0, &ErrCnt);
+call    0 returned 100%
+call    1 returned 100%
         -:   54:
         -:   55:	//Copy the game state of player to testPlayer
         1:   56:	memcpy(&testPlayer, &basePlayer, sizeof(struct gameState));
         -:   57:
         -:   58:    // 2 Check deck count is equal for both
         1:   59:    fakeAssert( (*(int*)testPlayer.deckCount), (*(int*)basePlayer.deckCount), &ErrCnt);
+call    0 returned 100%
         -:   60:
         -:   61:    //Add ambassador card to players hand
         1:   62:    testPlayer.hand[player][testPlayer.handCount[player]] = ambassador;
@@ -70,22 +80,29 @@
         -:   65:    // 3 Check that the ambassador card count is +1 for testplayer
         -:   66:    // chand hand count is 5 for base player and 6 for test player.
         1:   67:    fakeAssert(basePlayer.handCount[player] + 1, testPlayer.handCount[player], &ErrCnt);
+call    0 returned 100%
         -:   68:    
         -:   69:    ////////////////////PLAY CARD//////////////////////////////
         -:   70:    //Play ambassador card with a 3 for choice 1 and 3 for choice 2 
         1:   71:    cardEffect(ambassador, 3, 3, 0, &testPlayer, handpos, &bonus);
+call    0 returned 100%
         -:   72:	
         -:   73:	// 4 Check the players hand count post play -4 from 6 for testplayer and -0 from 5 for baseplayer.
         1:   74:    fakeAssert(basePlayer.handCount[player], testPlayer.handCount[player] + 3, &ErrCnt);
+call    0 returned 100%
         -:   75:    
         -:   76:    //Find Bug 2: commented out check for number of cards avaliable in hand
         -:   77:    // 5 Check to see that error -1 placed at hand index 4. 
         1:   78:    fakeAssert(testPlayer.hand[player][4], -1, &ErrCnt);
+call    0 returned 100%
         -:   79:     // 6 Check to see that error -1 placed at hand index 5 
         1:   80:    fakeAssert(testPlayer.hand[player][5], -1, &ErrCnt);
+call    0 returned 100%
         -:   81:
         -:   82:    // Re Initialize a game state and player cards
         1:   83:    fakeAssert(initializeGame(numPlayers, k, seed, &basePlayer), 0, &ErrCnt);
+call    0 returned 100%
+call    1 returned 100%
         -:   84:	//Copy the game state of player to testPlayer
         1:   85:	memcpy(&testPlayer, &basePlayer, sizeof(struct gameState));
         -:   86:    //Add ambassador card to players hand
@@ -102,7 +119,9 @@
         -:   97:    //Play ambassador card with a 3 for choice 1 and -2(illegal) for choice 2 
         -:   98:    int l;
         1:   99:    l = cardEffect(ambassador, 3, -2, 0, &testPlayer, handpos, &bonus);
+call    0 returned 100%
         1:  100:    fakeAssert(l, -1, &ErrCnt);
+call    0 returned 100%
         1:  101:    return 0;
         -:  102:}
         -:  103:

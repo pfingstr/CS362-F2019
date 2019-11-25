@@ -15,20 +15,26 @@
         -:   10:
         -:   11://gcc -o unittest3 dominion.c rngs.c unittest3.c
         -:   12:
+function fakeAssert called 6 returned 100% blocks executed 75%
         6:   13:void fakeAssert(int i, int j, int *ErrCnt)
         -:   14:{
         6:   15:    if(i == j)
+branch  0 taken 100% (fallthrough)
+branch  1 taken 0%
         -:   16:    {
         6:   17:        printf("TEST %d PASSED\n", *ErrCnt);
+call    0 returned 100%
         -:   18:    }
         -:   19:    else
         -:   20:    {
     #####:   21:        printf("TEST %d FAILED\n", *ErrCnt);
+call    0 never executed
         -:   22:    }
         6:   23:    *ErrCnt = *ErrCnt+1;
         -:   24:    
         6:   25:}
         -:   26:
+function main called 1 returned 100% blocks executed 100%
         1:   27:int main() 
         -:   28:{
         1:   29:    int handpos = 0, bonus = 0;
@@ -46,40 +52,52 @@
         -:   41:
         -:   42:
         1:   43:    printf("TESTING - %s\n", CARD_TEST);
+call    0 returned 100%
         -:   44:	
         -:   45:    // 1 Initialize a game state and player cards
         1:   46:    fakeAssert(initializeGame(numPlayers, k, seed, &basePlayer), 0, &ErrCnt);
+call    0 returned 100%
+call    1 returned 100%
         -:   47:	//Copy the game state of player to testPlayer
         1:   48:	memcpy(&testPlayer, &basePlayer, sizeof(struct gameState));
         -:   49:    // 2 Check deck count is equal for both
         1:   50:    fakeAssert( (*(int*)testPlayer.deckCount), (*(int*)basePlayer.deckCount), &ErrCnt);
+call    0 returned 100%
         -:   51:    //Add minion card to players hand at position 6
         1:   52:    testPlayer.hand[player][testPlayer.handCount[player]] = mine;
         1:   53:    testPlayer.handCount[player]++;
         -:   54:    
         -:   55:    // 3 Check that the hand count increased
         1:   56:    fakeAssert(basePlayer.handCount[player] + 1, testPlayer.handCount[player], &ErrCnt);
+call    0 returned 100%
         -:   57:    
         1:   58:    testPlayer.hand[player][0] = copper;
         -:   59:    
         -:   60:    int l;
         -:   61:    //Play mine card with out of bound '26' to detect bug 1
         1:   62:    l = cardEffect(mine, copper, 26, 0, &testPlayer, handpos, &bonus);
+call    0 returned 100%
         1:   63:	printf("%d\n", l);
+call    0 returned 100%
         -:   64:    //Cant find bug 1 because this should return -1 dont know why it isnt. 
         -:   65:
         -:   66:    //BUG 2 block
         1:   67:    fakeAssert(initializeGame(numPlayers, k, seed, &basePlayer), 0, &ErrCnt);
+call    0 returned 100%
+call    1 returned 100%
         -:   68:	//Copy the game state of player to testPlayer
         1:   69:	memcpy(&testPlayer, &basePlayer, sizeof(struct gameState));
         -:   70:    // Check deck count is equal for both
         1:   71:    fakeAssert( (*(int*)testPlayer.deckCount), (*(int*)basePlayer.deckCount), &ErrCnt);
+call    0 returned 100%
         -:   72:    //Add minion card to players hand at position 6
         1:   73:    testPlayer.hand[player][testPlayer.handCount[player]] = mine;
         1:   74:    testPlayer.handCount[player]++;
         1:   75:    cardEffect(mine, 0, treasure_map, 0, &testPlayer, handpos, &bonus);
+call    0 returned 100%
         -:   76:    //Detect Bug 2: mine card is never being discarded. 
         1:   77:    fakeAssert(mine, testPlayer.hand[player][0],&ErrCnt); 
+call    0 returned 100%
         -:   78:
         1:   79:    return 0;
         -:   80:}
