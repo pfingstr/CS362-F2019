@@ -1,0 +1,1 @@
+/*In the scoreFor function, the discardCount is being used for the deck count.*/

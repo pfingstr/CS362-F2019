@@ -1,0 +1,1 @@
+/*The number of bonus coins from actions does not appear to be recorded correctly in cardEffect.*/
