@@ -833,6 +833,8 @@ int cardEffect(int card, int choice1, int choice2, int choice3, struct gameState
         {
             if (state->hand[currentPlayer][i] == j)
             {
+                //to fix bug 1 
+                //discardCard(i, currentPlayer, state, 1);
                 discardCard(i, currentPlayer, state, 0);
                 break;
             }

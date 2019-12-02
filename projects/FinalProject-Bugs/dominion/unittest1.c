@@ -15,23 +15,34 @@ void checkMineDiscard(struct gameState *post) {
 
 	int choice1 = 1;
 	//int currentPlayer = 0;	
-    int card = baron;
+    int card = mine;
     int choice2 = 0;
     int choice3 = 0;
     int handPos = 0;
     int *bonus = 0;
+    
 
     cardEffect(card, choice1, choice2, choice3, post, handPos, bonus);
 	//baronEffect(choice1, post, currentPlayer);
 
-	//printf("Testing when card is mine\n");
+    printf("playedCardCount pre, %d\n", pre.playedCardCount);
+    printf("playedCardCount post, %d\n", post->playedCardCount);
+    
+    if(pre.playedCardCount == post->playedCardCount){
+        printf("passed, playedCardCount should not increase.\n");
+    }
+    else{
+        printf("failed, playedCardCount should not increase.\n");
+    }
 
+	//printf("Testing when card is mine\n");
+    /*
     if(pre.discardCount + 5 == post->discardCount){
         printf("passed, discard count should increase by 5.\n");
     }
     else{
         printf("failed, discard count should increase by 5.\n");
-    }
+    }*/
     //myAssert(pre.discardCount + 5 == post->discardCount, "discard count should increase 5.\n");
 
 	

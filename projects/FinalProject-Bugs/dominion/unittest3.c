@@ -15,7 +15,7 @@ void checkRemodel(struct gameState *post) {
 
 	int choice1 = silver;
 	//int currentPlayer = 0;	
-    int card = baron;
+    int card = remodel;
     int choice2 = copper;
     int choice3 = 0;
     int handPos = 0;

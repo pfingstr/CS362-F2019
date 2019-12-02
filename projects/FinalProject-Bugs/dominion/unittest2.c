@@ -16,7 +16,7 @@ void checkMineTreasure(struct gameState *post) {
 
 	int choice1 = copper;
 	//int currentPlayer = 0;	
-    int card = baron;
+    int card = mine;
     int choice2 = gold;
     int choice3 = 0;
     int handPos = 0;
