@@ -27,12 +27,25 @@ unittest_assert.o: dominion_helpers.h unittest_assert.c
 unittest1: unittest1.c dominion.o rngs.o unittest_assert.o
 	gcc  -o unittest1 -g  unittest1.c dominion.o rngs.o unittest_assert.o $(CFLAGS)
 
-
 unittest2: unittest2.c dominion.o rngs.o unittest_assert.o
 	gcc  -o unittest2 -g  unittest2.c dominion.o rngs.o unittest_assert.o $(CFLAGS)
 
 unittest3: unittest3.c dominion.o rngs.o unittest_assert.o
 	gcc  -o unittest3 -g  unittest3.c dominion.o rngs.o unittest_assert.o $(CFLAGS)
+
+
+
+unittest7: unittest7.c dominion.o rngs.o unittest_assert.o
+	gcc  -o unittest7 -g  unittest7.c dominion.o rngs.o unittest_assert.o $(CFLAGS)
+
+unittest8: unittest8.c dominion.o rngs.o unittest_assert.o
+	gcc  -o unittest8 -g  unittest8.c dominion.o rngs.o unittest_assert.o $(CFLAGS)
+
+unittest9: unittest9.c dominion.o rngs.o unittest_assert.o
+	gcc  -o unittest9 -g  unittest9.c dominion.o rngs.o unittest_assert.o $(CFLAGS)
+
+unittest10: unittest10.c dominion.o rngs.o unittest_assert.o
+	gcc  -o unittest10 -g  unittest10.c dominion.o rngs.o unittest_assert.o $(CFLAGS)
 
 unittestresults: unittest1 #unittest2 unittest3 
 	./unittest1 &> unittestresult.out
