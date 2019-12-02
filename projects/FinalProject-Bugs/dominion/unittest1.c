@@ -1,6 +1,6 @@
-/*The last discardCard function call within the mine and tribute case statement of the cardEffect function are 
+/*The last discardCard function call within the mine statement of the cardEffect function are 
 not actually trashing the cards.  They are just being put into the currentPlayers discard pile when the 
-chosen card should be trashed.*/
+chosen card should be trashed. */
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
