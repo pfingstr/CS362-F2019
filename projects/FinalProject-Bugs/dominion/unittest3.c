@@ -25,7 +25,7 @@ void checkRemodel(struct gameState *post) {
 	//baronEffect(choice1, post, currentPlayer);
 
 	printf("Testing when card is remodel, for compare treasure\n");
-
+    printf("r = %d\n", r);
     if(r == -1){
         printf("passed, return value should be -1.\n");
     }
