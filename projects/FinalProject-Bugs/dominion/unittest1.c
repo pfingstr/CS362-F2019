@@ -13,10 +13,10 @@ void checkMineDiscard(struct gameState *post) {
     struct gameState pre;
     memcpy (&pre, post, sizeof(struct gameState));
 
-	int choice1 = 1;
+	int choice1 = copper;
 	//int currentPlayer = 0;	
     int card = baron;
-    int choice2 = 0;
+    int choice2 = silver;
     int choice3 = 0;
     int handPos = 0;
     int *bonus = 0;
@@ -26,12 +26,19 @@ void checkMineDiscard(struct gameState *post) {
 
 	//printf("Testing when card is mine\n");
 
+    if(pre.playedCardCount + 1 == post->playedCardCount){
+        printf("passed, playedcardCount should only increase 1.\n");
+    }
+    else{
+        printf("failed, playedCardCount should only increase 1.\n");
+    }
+    /*
     if(pre.discardCount + 5 == post->discardCount){
         printf("passed, discard count should increase by 5.\n");
     }
     else{
         printf("failed, discard count should increase by 5.\n");
-    }
+    }*/
     //myAssert(pre.discardCount + 5 == post->discardCount, "discard count should increase 5.\n");
 
 	
