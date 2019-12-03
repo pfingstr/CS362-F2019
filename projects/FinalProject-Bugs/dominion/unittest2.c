@@ -16,7 +16,7 @@ void checkMineTreasure(struct gameState *post) {
 
 	int choice1 = copper;
 	//int currentPlayer = 0;	
-    int card = mine;
+    int card = baron;
     int choice2 = gold;
     int choice3 = 0;
     int handPos = 0;
@@ -51,7 +51,7 @@ int main()
 	memset(&G, 23, sizeof(struct gameState));
 	initializeGame(playernum, k, seed, &G);
 
-    printf ("Testing baronEffect.\n");
+    //printf ("Testing .\n");
 
 	//checkBaronEffect1(&G);
 	checkMineTreasure(&G);

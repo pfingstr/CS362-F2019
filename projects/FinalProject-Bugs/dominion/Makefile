@@ -4,7 +4,7 @@ rngs.o: rngs.h rngs.c
 	gcc -c rngs.c -g  $(CFLAGS)
 
 dominion.o: dominion.h dominion.c rngs.o
-	gcc -c dominion.c -g  $(CFLAGS)
+	gcc -c dominion.c -g -ftest-coverage $(CFLAGS)
 
 playdom: dominion.o playdom.c
 	gcc -o playdom playdom.c -g dominion.o rngs.o $(CFLAGS)
@@ -25,22 +25,22 @@ unittest_assert.o: dominion_helpers.h unittest_assert.c
 	gcc -c unittest_assert.c -g $(CFLAGS)
 
 unittest1: unittest1.c dominion.o rngs.o unittest_assert.o
-	gcc  -o unittest1 -g unittest1.c dominion.o rngs.o unittest_assert.o $(CFLAGS)
+	gcc  -o unittest1 -g  unittest1.c dominion.o rngs.o unittest_assert.o $(CFLAGS)
 
 unittest2: unittest2.c dominion.o rngs.o unittest_assert.o
-	gcc  -o unittest2 -g unittest2.c dominion.o rngs.o unittest_assert.o $(CFLAGS)
+	gcc  -o unittest2 -g  unittest2.c dominion.o rngs.o unittest_assert.o $(CFLAGS)
 
 unittest3: unittest3.c dominion.o rngs.o unittest_assert.o
-	gcc  -o unittest3 -g unittest3.c dominion.o rngs.o unittest_assert.o $(CFLAGS)
+	gcc  -o unittest3 -g  unittest3.c dominion.o rngs.o unittest_assert.o $(CFLAGS)
 
 unittest4: unittest4.c dominion.o rngs.o 
-	gcc  -o unittest4 -g unittest4.c dominion.o rngs.o $(CFLAGS)
+	gcc  -o unittest4 -g  unittest4.c dominion.o rngs.o $(CFLAGS)
 
 unittest5: unittest5.c dominion.o rngs.o 
-	gcc  -o unittest5 -g unittest5.c dominion.o rngs.o $(CFLAGS)
+	gcc  -o unittest5 -g  unittest5.c dominion.o rngs.o $(CFLAGS)
 
 unittest6: unittest6.c dominion.o rngs.o 
-	gcc  -o unittest6 -g unittest6.c dominion.o rngs.o $(CFLAGS)
+	gcc  -o unittest6 -g  unittest6.c dominion.o rngs.o $(CFLAGS)
 
 unittest7: unittest7.c dominion.o rngs.o unittest_assert.o
 	gcc  -o unittest7 -g unittest7.c dominion.o rngs.o $(CFLAGS)

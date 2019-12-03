@@ -1,6 +1,6 @@
-/*The last discardCard function call within the mine and tribute case statement of the cardEffect function are 
+/*The last discardCard function call within the mine statement of the cardEffect function are 
 not actually trashing the cards.  They are just being put into the currentPlayers discard pile when the 
-chosen card should be trashed.*/
+chosen card should be trashed. */
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -15,27 +15,23 @@ void checkMineDiscard(struct gameState *post) {
 
 	int choice1 = copper;
 	//int currentPlayer = 0;	
-    int card = mine;
+    int card = baron;
     int choice2 = silver;
     int choice3 = 0;
     int handPos = 0;
     int *bonus = 0;
-    
 
     cardEffect(card, choice1, choice2, choice3, post, handPos, bonus);
 	//baronEffect(choice1, post, currentPlayer);
 
-    printf("playedCardCount pre, %d\n", pre.playedCardCount);
-    printf("playedCardCount post, %d\n", post->playedCardCount);
-    
+	//printf("Testing when card is mine\n");
+
     if(pre.playedCardCount + 1 == post->playedCardCount){
-        printf("passed, playedCardCount should only increase 1.\n");
+        printf("passed, playedcardCount should only increase 1.\n");
     }
     else{
         printf("failed, playedCardCount should only increase 1.\n");
     }
-
-	//printf("Testing when card is mine\n");
     /*
     if(pre.discardCount + 5 == post->discardCount){
         printf("passed, discard count should increase by 5.\n");

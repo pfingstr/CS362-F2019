@@ -15,7 +15,7 @@ void checkRemodel(struct gameState *post) {
 
 	int choice1 = silver;
 	//int currentPlayer = 0;	
-    int card = remodel;
+    int card = baron;
     int choice2 = copper;
     int choice3 = 0;
     int handPos = 0;
@@ -25,13 +25,12 @@ void checkRemodel(struct gameState *post) {
 	//baronEffect(choice1, post, currentPlayer);
 
 	printf("Testing when card is remodel, for compare treasure\n");
-
-    printf("r = %d.\n", r);
+    printf("r = %d\n", r);
     if(r == -1){
-        printf("failed, return value should be 0.\n");
+        printf("passed, return value should be -1.\n");
     }
     else{
-        printf("passed, return value should be 0.\n");
+        printf("failed, return value should be -1.\n");
     }
     //myAssert(pre.discardCount + 5 == post->discardCount, "discard count should increase 5.\n");
 

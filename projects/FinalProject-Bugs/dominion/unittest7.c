@@ -45,16 +45,16 @@ void tribute7(struct gameState *post)
 
 	post->deck[nextPlayer][0] = baron;
 	post->deck[nextPlayer][1] = mine;
-    // Bug 7 fixed so this card no longer gets used
+    // Bug 7 loop also uses this card
 	post->deck[nextPlayer][2] = copper;
     // tributerevealedcard [1]:
 	post->deck[nextPlayer][3] = mine;
     // tributerevealedcard [0]:
-	post->deck[nextPlayer][4] = copper;
+	post->deck[nextPlayer][4] = estate;
 
 	cardEffect(tribute, 0,0,0, post, 0, 0);
-	fakeAssert(pre.numActions, post->numActions, &ErrCnt, "numActions should increase by 2. (mine)");
-	fakeAssert(post->coins, pre.coins + 2, &ErrCnt, "coins supposed to increase by 2 (copper).");
+	fakeAssert(pre.numActions + 2, post->numActions, &ErrCnt, "numActions should increase by 2. (mine)");
+	fakeAssert(post->coins, pre.coins, &ErrCnt, "coins not supposed to increase but do (copper).");
 }
 
 int main()
