@@ -690,6 +690,8 @@ int cardEffect(int card, int choice1, int choice2, int choice3, struct gameState
     int index;
     int currentPlayer = whoseTurn(state);
     int nextPlayer = currentPlayer + 1;
+    int tribSwitch;
+    tribSwitch=0;
 
     int tributeRevealedCards[2] = {-1, -1};
     int temphand[MAX_HAND];// moved above the if statement
@@ -1026,6 +1028,7 @@ int cardEffect(int card, int choice1, int choice2, int choice3, struct gameState
         return 0;
 
     case tribute:
+
         if ((state->discardCount[nextPlayer] + state->deckCount[nextPlayer]) <= 1) {
             if (state->deckCount[nextPlayer] > 0) {
                 tributeRevealedCards[0] = state->deck[nextPlayer][state->deckCount[nextPlayer]-1];
@@ -1066,9 +1069,10 @@ int cardEffect(int card, int choice1, int choice2, int choice3, struct gameState
             state->playedCards[state->playedCardCount] = tributeRevealedCards[1];
             state->playedCardCount++;
             tributeRevealedCards[1] = -1;
+            tribSwitch=1;
         }
-
-        for (i = 0; i <= 2; i ++) {
+        //Fix bug 7
+        for (i = 0; i < 2; i ++) {
             if (tributeRevealedCards[i] == copper || tributeRevealedCards[i] == silver || tributeRevealedCards[i] == gold) { //Treasure cards
                 state->coins += 2;
             }
@@ -1077,6 +1081,12 @@ int cardEffect(int card, int choice1, int choice2, int choice3, struct gameState
                 drawCard(currentPlayer, state);
                 drawCard(currentPlayer, state);
             }
+            //Fix bug 9
+            else if((tributeRevealedCards[i] == -1)&&(tribSwitch==1)) {
+                tribSwitch=0;
+                continue;
+            }
+
             else { //Action Card
                 state->numActions = state->numActions + 2;
             }
