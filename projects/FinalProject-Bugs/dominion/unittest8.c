@@ -40,10 +40,11 @@ void coin8(struct gameState *post)
     post->hand[0][2] = estate;
     post->hand[0][3] = copper;
 
-    //printf("%d\n", pre.coins);
+    printf("%d\n", pre.coins);
+    printf("%d\n", post->coins);
     pc = playCard(0, 1, 0, 0, post);
-    //cardEffect(baron, 1, 0,0, post, 0, 0);
-    //printf("%d\n", post->coins);
+    //cardEffect(baron, 1, 0, 0, post, 0, 0);
+    printf("%d\n", post->coins);
     //printf("%d\n", pc);
 
 	fakeAssert(pc, 0, &ErrCnt, "PlayCard() returning 0.");
@@ -55,7 +56,6 @@ int main()
     int k[10] = {adventurer, council_room, feast, gardens, mine,
                  remodel, tribute, village, baron, great_hall
                 };
-
 	int playernum = 2;
 	int seed = 100;
 	struct gameState G;
