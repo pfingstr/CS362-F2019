@@ -31,7 +31,7 @@ int main()
 	struct gameState G;
 	memset(&G, 23, sizeof(struct gameState));
 	initializeGame(playernum, k, seed, &G);
-	// initialize game state described in test plan, set 3 duchy in discard pile and one estate in hand, no cards in deck.
+	// initialize game state described in test plan, set 1 duchy in discard pile£¬ 2 duchy in deck and one estate in hand.
 	G.deckCount[currentPlayer] = 2;
 	G.discardCount[currentPlayer] = 1;
 	G.handCount[currentPlayer] = 1;
