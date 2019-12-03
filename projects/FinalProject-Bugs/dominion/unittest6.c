@@ -44,7 +44,7 @@ int main()
 
 	printf("Start testing isGameOver().\n");
 	result = cardEffect(feast,choice1,choice2,choice3,&G,G.hand[currentPlayer][G.handCount[currentPlayer]-1],&bonus);
-	result = buyCard(copper, &G);
+	result = buyCard(mine, &G);
 	assert(result == -1);
 	printf("actual value of result is:%d\n", result);
 
