@@ -690,7 +690,7 @@ int cardEffect(int card, int choice1, int choice2, int choice3, struct gameState
     int index;
     int currentPlayer = whoseTurn(state);
     int nextPlayer = currentPlayer + 1;
-
+    int tribS;
     int tributeRevealedCards[2] = {-1, -1};
     int temphand[MAX_HAND];// moved above the if statement
     int drawntreasure=0;
@@ -1039,6 +1039,8 @@ int cardEffect(int card, int choice1, int choice2, int choice3, struct gameState
         return 0;
 
     case tribute:
+    
+    tribS = 0;
         if ((state->discardCount[nextPlayer] + state->deckCount[nextPlayer]) <= 1) {
             if (state->deckCount[nextPlayer] > 0) {
                 tributeRevealedCards[0] = state->deck[nextPlayer][state->deckCount[nextPlayer]-1];
@@ -1078,10 +1080,14 @@ int cardEffect(int card, int choice1, int choice2, int choice3, struct gameState
         if (tributeRevealedCards[0] == tributeRevealedCards[1]) { //If we have a duplicate card, just drop one
             state->playedCards[state->playedCardCount] = tributeRevealedCards[1];
             state->playedCardCount++;
+            
+            tribS = 1;
             tributeRevealedCards[1] = -1;
-        }
 
-        for (i = 0; i <= 2; i ++) {
+        }
+        //Fix Bug 7
+        for(i = 0; i < 2; i ++) {
+        //for (i = 0; i <= 2; i ++) {
             if (tributeRevealedCards[i] == copper || tributeRevealedCards[i] == silver || tributeRevealedCards[i] == gold) { //Treasure cards
                 state->coins += 2;
             }
@@ -1090,6 +1096,12 @@ int cardEffect(int card, int choice1, int choice2, int choice3, struct gameState
                 drawCard(currentPlayer, state);
                 drawCard(currentPlayer, state);
             }
+            //Fix bug 9
+            else if ((tributeRevealedCards[i] == -1)&&(tribS == 1)) {
+                tribS=0; 
+                continue;
+            }
+
             else { //Action Card
                 state->numActions = state->numActions + 2;
             }
@@ -1112,7 +1124,8 @@ int cardEffect(int card, int choice1, int choice2, int choice3, struct gameState
 
         for (i = 0; i < state->handCount[currentPlayer]; i++)
         {
-            if (i != handPos && i == state->hand[currentPlayer][choice1] && i != choice1)
+            //Fix Bug 10
+            if (i != handPos && state->hand[currentPlayer][i]  == state->hand[currentPlayer][choice1] && i != choice1)
             {
                 j++;
             }

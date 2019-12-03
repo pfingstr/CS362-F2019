@@ -25,34 +25,34 @@ unittest_assert.o: dominion_helpers.h unittest_assert.c
 	gcc -c unittest_assert.c -g $(CFLAGS)
 
 unittest1: unittest1.c dominion.o rngs.o unittest_assert.o
-	gcc  -o unittest1 -g  unittest1.c dominion.o rngs.o unittest_assert.o $(CFLAGS)
+	gcc  -o unittest1 -g unittest1.c dominion.o rngs.o unittest_assert.o $(CFLAGS)
 
 unittest2: unittest2.c dominion.o rngs.o unittest_assert.o
-	gcc  -o unittest2 -g  unittest2.c dominion.o rngs.o unittest_assert.o $(CFLAGS)
+	gcc  -o unittest2 -g unittest2.c dominion.o rngs.o unittest_assert.o $(CFLAGS)
 
 unittest3: unittest3.c dominion.o rngs.o unittest_assert.o
-	gcc  -o unittest3 -g  unittest3.c dominion.o rngs.o unittest_assert.o $(CFLAGS)
+	gcc  -o unittest3 -g unittest3.c dominion.o rngs.o unittest_assert.o $(CFLAGS)
 
 unittest4: unittest4.c dominion.o rngs.o 
-	gcc  -o unittest4 -g  unittest4.c dominion.o rngs.o $(CFLAGS)
+	gcc  -o unittest4 -g unittest4.c dominion.o rngs.o $(CFLAGS)
 
 unittest5: unittest5.c dominion.o rngs.o 
-	gcc  -o unittest5 -g  unittest5.c dominion.o rngs.o $(CFLAGS)
+	gcc  -o unittest5 -g unittest5.c dominion.o rngs.o $(CFLAGS)
 
 unittest6: unittest6.c dominion.o rngs.o 
-	gcc  -o unittest6 -g  unittest6.c dominion.o rngs.o $(CFLAGS)
+	gcc  -o unittest6 -g unittest6.c dominion.o rngs.o $(CFLAGS)
 
 unittest7: unittest7.c dominion.o rngs.o unittest_assert.o
-	gcc  -o unittest7 -g  unittest7.c dominion.o rngs.o $(CFLAGS)
+	gcc  -o unittest7 -g unittest7.c dominion.o rngs.o $(CFLAGS)
 
 unittest8: unittest8.c dominion.o rngs.o unittest_assert.o
-	gcc  -o unittest8 -g  unittest8.c dominion.o rngs.o $(CFLAGS)
+	gcc  -o unittest8 -g unittest8.c dominion.o rngs.o $(CFLAGS)
 
 unittest9: unittest9.c dominion.o rngs.o unittest_assert.o
-	gcc  -o unittest9 -g  unittest9.c dominion.o rngs.o $(CFLAGS)
+	gcc  -o unittest9 -g unittest9.c dominion.o rngs.o $(CFLAGS)
 
 unittest10: unittest10.c dominion.o rngs.o unittest_assert.o
-	gcc  -o unittest10 -g  unittest10.c dominion.o rngs.o $(CFLAGS)
+	gcc  -o unittest10 -g unittest10.c dominion.o rngs.o $(CFLAGS)
 
 unittestresults: unittest1 unittest2 unittest3 unittest4 unittest5 unittest6 unittest7 unittest8 unittest9 unittest10
 	./unittest1 &> unittestresult.out

@@ -4,21 +4,6 @@ two elements and the loop is written to iterate 3 times.*/
 
 //gcc -o unittest7 dominion.c rngs.c unittest7.c .... /Desktop/cs362/CS362-F2019/projects/pfingstr
 
-
-/* * If the player after you has fewer than 2 cards left in his deck, he reveals all 
-         the cards in his deck, shuffles his discard pile (which does not include currently 
-         revealed cards), and then reveals the remainder needed. The player then discards the revealed cards.
-       * If the player after you does not have enough cards to reveal 2, he reveals what he can.
-       * You get bonuses for the types of cards revealed, counting only the different cards.
-       * A card with 2 types gives you both bonuses.
-         So if the player to your left reveals Copper and Harem, you get +$4 and +2 cards; 
-         if he reveals 2 Silvers, you just get +$2.  
-         Changed: for (i = 0; i <= 2; i ++) {
-        changed to: for (i = 0; i <= 1; i ++) {
-        Impact: There will only be max +2 gold for the player.
-        2. Removed: shuffle(nextPlayer,state);
-    I   mpact: If there are no available cards for next player their deck will not be shuffled.*/
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>

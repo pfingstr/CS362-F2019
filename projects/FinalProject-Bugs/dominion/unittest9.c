@@ -5,16 +5,6 @@ contains the card and index 1 contains -1.  What isn't fine is there is no condi
 
 //gcc -o unittest9 dominion.c rngs.c unittest9.c .... ./Desktop/cs362
 
-/*  * If the player after you has fewer than 2 cards left in his deck, he reveals all 
-         the cards in his deck, shuffles his discard pile (which does not include currently 
-         revealed cards), and then reveals the remainder needed. The player then discards 
-         the revealed cards.
-    * If the player after you does not have enough cards to reveal 2, he reveals what he can.
-    * You get bonuses for the types of cards revealed, counting only the different cards.
-    * A card with 2 types gives you both bonuses.
-        So if the player to your left reveals Copper and Harem, you get +$4 and +2 cards; 
-        if he reveals 2 Silvers, you just get +$2. */
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -65,10 +55,10 @@ void tribute9(struct gameState *post)
 	cardEffect(tribute, 0,0,0, post, 0, 0);
     //printf("pre actions - %d\n", pre.numActions);
     //printf("post actions - %d\n", post->numActions);
-    //printf("pre actions - %d\n", pre.coins);
-    //printf("post actions - %d\n", post->coins);
-	fakeAssert(pre.numActions + 2, post->numActions, &ErrCnt, "numActions should NOT increase by 2.");
-	fakeAssert(post->coins, pre.coins + 2, &ErrCnt, "coins should increase by 2.");
+    //printf("pre coins - %d\n", pre.coins);
+    //printf("post coins - %d\n", post->coins);
+	fakeAssert(pre.numActions, post->numActions, &ErrCnt, "numActions should NOT increase.");
+	fakeAssert(post->coins, pre.coins + 2, &ErrCnt, "coins should increase by 2 with double coppers.");
 }
 
 int main()
