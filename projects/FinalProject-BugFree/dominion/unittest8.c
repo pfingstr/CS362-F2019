@@ -40,11 +40,11 @@ void coin8(struct gameState *post)
     post->hand[0][2] = estate;
     post->hand[0][3] = copper;
 
-    //printf("%d\n", pre.coins);
+    printf("%d\n", pre.coins);
     pc = playCard(0, 1, 0, 0, post);
-    //cardEffect(baron, 1, 0,0, post, 0, 0);
-    //printf("%d\n", post->coins);
-    //printf("%d\n", pc);
+    //cardEffect(baron, 1, 0, 0, post, 0, 0);
+    printf("%d\n", post->coins);
+    printf("%d\n", pc);
 
 	fakeAssert(pc, 0, &ErrCnt, "PlayCard() returning 0.");
 	fakeAssert(post->coins, pre.coins + 4, &ErrCnt, "Coins supposed to increase by 4.");
