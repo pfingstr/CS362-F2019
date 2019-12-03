@@ -30,14 +30,14 @@ void ambassador10(struct gameState *post) {
     memcpy (&pre, post, sizeof(struct gameState));
     int ErrCnt;
     ErrCnt = 1;
-	int handPos = 0;
+	int handPos = 4;
 	int currentPlayer = 0;
-	int choice1 = 0;
+	int choice1 = 1;
 	int choice2 = 2;
 
     post->hand[0][0] = curse;
     post->hand[0][1] = curse;
-    post->hand[0][2] = gold;
+    post->hand[0][2] = curse;
     post->hand[0][3] = copper;
     post->hand[0][4] = ambassador;
     
@@ -48,7 +48,8 @@ void ambassador10(struct gameState *post) {
     //return 1 curse to supply
 	int r = cardEffect(ambassador, choice1, choice2, 0, post, handPos, 0);
     //printf("%d\n", r);
-    fakeAssert(-1, r, &ErrCnt, "incorrect comparrison of position vs card.");
+    fakeAssert(0, r, &ErrCnt, "Ambassador card is now actually counting curse cards.");
+    
     
 }
 

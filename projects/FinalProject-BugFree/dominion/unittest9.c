@@ -58,7 +58,7 @@ void tribute9(struct gameState *post)
     //printf("pre coins - %d\n", pre.coins);
     //printf("post coins - %d\n", post->coins);
 	fakeAssert(pre.numActions, post->numActions, &ErrCnt, "numActions should NOT increase.");
-	fakeAssert(post->coins, pre.coins + 2, &ErrCnt, "coins should increase by 2 with double coppers.");
+	fakeAssert(post->coins, pre.coins + 2, &ErrCnt, "coins should increase by only 2 with double coppers.");
 }
 
 int main()
