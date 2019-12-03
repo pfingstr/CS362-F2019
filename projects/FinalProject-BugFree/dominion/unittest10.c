@@ -48,7 +48,7 @@ void ambassador10(struct gameState *post) {
     //return 1 curse to supply
 	int r = cardEffect(ambassador, choice1, choice2, 0, post, handPos, 0);
     //printf("%d\n", r);
-    fakeAssert(0, r, &ErrCnt, "incorrect comparrison of position vs card.");
+    fakeAssert(-1, r, &ErrCnt, "incorrect comparrison of position vs card.");
     
 }
 

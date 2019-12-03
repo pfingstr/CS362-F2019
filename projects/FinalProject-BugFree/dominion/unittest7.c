@@ -53,13 +53,8 @@ void tribute7(struct gameState *post)
 	post->deck[nextPlayer][4] = copper;
 
 	cardEffect(tribute, 0,0,0, post, 0, 0);
-<<<<<<< HEAD
 	fakeAssert(pre.numActions, post->numActions, &ErrCnt, "numActions should increase by 2. (mine)");
 	fakeAssert(post->coins, pre.coins + 2, &ErrCnt, "coins supposed to increase by 2 (copper).");
-=======
-	fakeAssert(pre.numActions + 2, post->numActions, &ErrCnt, "numActions should increase by 2. (mine)");
-	fakeAssert(post->coins, pre.coins, &ErrCnt, "coins not supposed to increase but do (copper).");
->>>>>>> pfingstr-finalproject-bugfree
 }
 
 int main()

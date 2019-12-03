@@ -27,19 +27,19 @@ int main()
 	int seed = 100;
 	int score = 0;
 	int currentPlayer = 0;
+	int i = 0;
 
 	struct gameState G;
 	memset(&G, 23, sizeof(struct gameState));
 	initializeGame(playernum, k, seed, &G);
-	// initialize game state described in test plan, set 1 duchy in discard pile£¬ 2 duchy in deck and one estate in hand.
-	G.deckCount[currentPlayer] = 2;
-	G.discardCount[currentPlayer] = 1;
+	// initialize game state described in test plan, set 3 duchy in discard pile and one estate in hand, no cards in deck.
+	G.deckCount[currentPlayer] = 0;
+	G.discardCount[currentPlayer] = 3;
 	G.handCount[currentPlayer] = 1;
-	G.discard[currentPlayer][0] = duchy;
+	for (i=0; i < 3; i++) {
+		G.discard[currentPlayer][i] = duchy;
+	}
 	G.hand[currentPlayer][0] = estate;
-	G.deck[0][0] = duchy;
-	G.deck[0][1] = duchy;
-	G.deck[0][2] = -1;
 
 	printf("Start testing isGameOver().\n");
 	score = scoreFor(currentPlayer,&G);

@@ -1,7 +1,6 @@
-/*For the Mine switch statement in the cardEffect function (around line 821), it seems that it checks the cost 
-of the card they trash against the cost of the card they want to buy incorrectly.  It looks like if the cost of 
-the treasure that they choose to trash plus 3, is greater than the cost of the card they want to buy, then it 
-will return -1.*/
+/*In the remodel case within the cardEffect function, the if statement that compares the two choice 
+statements needs to be switched (around Line #846).*/
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -10,14 +9,14 @@ will return -1.*/
 #include "dominion_helpers.h"
 #include "rngs.h"
 
-void checkMineTreasure(struct gameState *post) {
+void checkRemodel(struct gameState *post) {
     struct gameState pre;
     memcpy (&pre, post, sizeof(struct gameState));
 
-	int choice1 = copper;
+	int choice1 = silver;
 	//int currentPlayer = 0;	
-    int card = baron;
-    int choice2 = gold;
+    int card = remodel;
+    int choice2 = copper;
     int choice3 = 0;
     int handPos = 0;
     int *bonus = 0;
@@ -25,13 +24,14 @@ void checkMineTreasure(struct gameState *post) {
     int r = cardEffect(card, choice1, choice2, choice3, post, handPos, bonus);
 	//baronEffect(choice1, post, currentPlayer);
 
-	printf("Testing when card is mine, for trashing treasure\n");
+	printf("Testing when card is remodel, for compare treasure\n");
 
+    printf("r = %d.\n", r);
     if(r == -1){
-        printf("passed, return value should be -1.\n");
+        printf("failed, return value should be 0.\n");
     }
     else{
-        printf("failed, return value should be -1.\n");
+        printf("passed, return value should be 0.\n");
     }
     //myAssert(pre.discardCount + 5 == post->discardCount, "discard count should increase 5.\n");
 
@@ -54,7 +54,7 @@ int main()
     //printf ("Testing .\n");
 
 	//checkBaronEffect1(&G);
-	checkMineTreasure(&G);
+	checkRemodel(&G);
 
 
     printf ("Test completed.\n");
