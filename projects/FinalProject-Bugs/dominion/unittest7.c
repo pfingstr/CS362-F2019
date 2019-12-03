@@ -54,7 +54,7 @@ void tribute7(struct gameState *post)
 
 	cardEffect(tribute, 0,0,0, post, 0, 0);
 	fakeAssert(pre.numActions + 2, post->numActions, &ErrCnt, "numActions should increase by 2. (mine)");
-	fakeAssert(post->coins, pre.coins + 2, &ErrCnt, "coins not supposed to increase but do (copper).");
+	fakeAssert(post->coins, pre.coins, &ErrCnt, "coins not supposed to increase but do (copper).");
 }
 
 int main()
