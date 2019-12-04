@@ -1085,7 +1085,7 @@ int cardEffect(int card, int choice1, int choice2, int choice3, struct gameState
         for(i = 0; i < 2; i ++) {
         //for (i = 0; i <= 2; i ++) {
             if (tributeRevealedCards[i] == copper || tributeRevealedCards[i] == silver || tributeRevealedCards[i] == gold) { //Treasure cards
-                *bonus = 2;//bug 8 fix
+				state->coins += 2;
             }
 
             else if (tributeRevealedCards[i] == estate || tributeRevealedCards[i] == duchy || tributeRevealedCards[i] == province || tributeRevealedCards[i] == gardens || tributeRevealedCards[i] == great_hall) { //Victory Card Found
