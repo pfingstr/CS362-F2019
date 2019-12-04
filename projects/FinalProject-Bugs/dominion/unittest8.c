@@ -26,22 +26,23 @@ void coin8(struct gameState *post)
     memcpy (&pre, post, sizeof(struct gameState));
     int ErrCnt;
     ErrCnt = 1;
-	int i;
-	int currentPlayer = 0;
+	//int i;
+	//int currentPlayer = 0;
 	//int nextPlayer = 1;
     int pc;
 
-	for (i = 0; i < 6; ++i) {
-		drawCard(currentPlayer, post);
-	}
+	//for (i = 0; i < 6; ++i) {
+	//	drawCard(currentPlayer, post);
+	//}
     
-    post->hand[0][0] = baron;
-    post->hand[0][1] = curse;
-    post->hand[0][2] = estate;
-    post->hand[0][3] = copper;
+    post->hand[0][5] = baron;
+    post->hand[0][6] = curse;
+    post->hand[0][7] = estate;
+    //post->hand[0][8] = copper;
+	post->handCount[0] = post->handCount[0] + 3;
 
     //printf("%d\n", pre.coins);
-    pc = playCard(0, 1, 0, 0, post);
+    pc = playCard(5, 1, 0, 0, post);
     //cardEffect(baron, 1, 0,0, post, 0, 0);
     //printf("%d\n", post->coins);
     //printf("%d\n", pc);
