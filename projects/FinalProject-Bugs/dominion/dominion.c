@@ -690,8 +690,6 @@ int cardEffect(int card, int choice1, int choice2, int choice3, struct gameState
     int index;
     int currentPlayer = whoseTurn(state);
     int nextPlayer = currentPlayer + 1;
-    int tribSwitch;
-    tribSwitch=0;
 
     int tributeRevealedCards[2] = {-1, -1};
     int temphand[MAX_HAND];// moved above the if statement
@@ -897,11 +895,7 @@ int cardEffect(int card, int choice1, int choice2, int choice3, struct gameState
             int card_not_discarded = 1;//Flag for discard set!
             while(card_not_discarded) {
                 if (state->hand[currentPlayer][p] == estate) { //Found an estate card!
-                    
-                    //Fix bug 8
-                    *bonus = 0;
-                    //*bonus += 4;
-                    //state->coins += 4;//Add 4 coins to the amount of coins
+                    state->coins += 4;//Add 4 coins to the amount of coins
                     state->discard[currentPlayer][state->discardCount[currentPlayer]] = state->hand[currentPlayer][p];
                     state->discardCount[currentPlayer]++;
                     for (; p < state->handCount[currentPlayer]; p++) {
@@ -967,7 +961,7 @@ int cardEffect(int card, int choice1, int choice2, int choice3, struct gameState
 
 		if (choice1)
         {
-            updateCoins(currentPlayer, state, 2);
+            state->coins = state->coins + 2;
         }
         else if (choice2)		//discard hand, redraw 4, other players with 5+ cards discard hand and draw 4
         {
@@ -1032,7 +1026,6 @@ int cardEffect(int card, int choice1, int choice2, int choice3, struct gameState
         return 0;
 
     case tribute:
-
         if ((state->discardCount[nextPlayer] + state->deckCount[nextPlayer]) <= 1) {
             if (state->deckCount[nextPlayer] > 0) {
                 tributeRevealedCards[0] = state->deck[nextPlayer][state->deckCount[nextPlayer]-1];
@@ -1073,26 +1066,17 @@ int cardEffect(int card, int choice1, int choice2, int choice3, struct gameState
             state->playedCards[state->playedCardCount] = tributeRevealedCards[1];
             state->playedCardCount++;
             tributeRevealedCards[1] = -1;
-            //Fix bug 9
-            tribSwitch=1;
         }
-        //Fix bug 7
-        for (i = 0; i < 2; i ++) {
+
+        for (i = 0; i <= 2; i ++) {
             if (tributeRevealedCards[i] == copper || tributeRevealedCards[i] == silver || tributeRevealedCards[i] == gold) { //Treasure cards
-                updateCoins(currentPlayer, state, 2);
-                //*bonus +=2;
+                state->coins += 2;
             }
 
             else if (tributeRevealedCards[i] == estate || tributeRevealedCards[i] == duchy || tributeRevealedCards[i] == province || tributeRevealedCards[i] == gardens || tributeRevealedCards[i] == great_hall) { //Victory Card Found
                 drawCard(currentPlayer, state);
                 drawCard(currentPlayer, state);
             }
-            //Fix bug 9
-            else if((tributeRevealedCards[i] == -1)&&(tribSwitch==1)) {
-                tribSwitch=0;
-                continue;
-            }
-
             else { //Action Card
                 state->numActions = state->numActions + 2;
             }
@@ -1115,8 +1099,7 @@ int cardEffect(int card, int choice1, int choice2, int choice3, struct gameState
 
         for (i = 0; i < state->handCount[currentPlayer]; i++)
         {
-            //Fix bug 10
-            if (i != handPos && (state->hand[currentPlayer][i] == state->hand[currentPlayer][choice1]) && i != choice1)
+            if (i != handPos && i == state->hand[currentPlayer][choice1] && i != choice1)
             {
                 j++;
             }
